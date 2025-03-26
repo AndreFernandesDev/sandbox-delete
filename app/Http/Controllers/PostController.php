@@ -4,10 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\PostResource;
 use App\Http\Resources\RateResource;
-use App\Models\Media;
 use App\Models\Post;
 use App\Models\Rate;
-use Illuminate\Support\Facades\Storage;
+use App\Services\MediaService;
 use Inertia\Inertia;
 
 class PostController extends Controller
@@ -19,7 +18,7 @@ class PostController extends Controller
         ]);
     }
 
-    public function store()
+    public function store(MediaService $mediaService)
     {
         request()->validate([
             'uploads' => 'required',
@@ -34,16 +33,7 @@ class PostController extends Controller
             'currency' => request()->input('currency'),
         ]);
 
-        $uploads = request()->file('uploads');
-        foreach ($uploads as $i => $upload) {
-            Media::create([
-                'type' => $upload["file"]->getMimeType(),
-                'name' => $upload["file"]->hashName(),
-                'item_id' => $post->id,
-                'order' => $i,
-            ]);
-            Storage::disk('public')->put('uploads', $upload["file"]);
-        }
+        $mediaService->storeMany(request()->file('uploads'), $post->id);
 
         return to_route('post.show', ["id" => $post->id]);
     }
@@ -68,7 +58,7 @@ class PostController extends Controller
         ]);
     }
 
-    public function update(string $id)
+    public function update(string $id, MediaService $mediaService)
     {
         request()->validate([
             'uploads' => 'required',
@@ -85,55 +75,17 @@ class PostController extends Controller
             'currency' => request()->input('currency'),
         ]);
 
-        if (request()->input('deletes')) {
-            foreach (request()->input('deletes') as $id) {
-                $media = Media::find($id);
-                if (!$media) {
-                    continue;
-                }
-
-                Storage::disk('public')->delete('uploads/' . $media->name);
-                $media->delete();
-
-            }
-        }
-
-        foreach (request()->input('uploads') as $i => $upload) {
-            $media = Media::find($upload["id"]);
-
-            if (!$media) {
-                foreach (request()->file('uploads') as $uploadFile) {
-                    if (!$uploadFile["file"]->getClientOriginalName() == $upload["id"]) {
-                        continue;
-                    }
-
-                    $media = Media::create([
-                        'type' => $uploadFile["file"]->getMimeType(),
-                        'name' => $uploadFile["file"]->hashName(),
-                        'item_id' => $post->id,
-                        'order' => $i,
-                    ]);
-                    Storage::disk('public')->put('uploads', $uploadFile["file"]);
-                }
-
-            } else {
-                $media->update(["order" => $i]);
-            }
-        }
+        $mediaService->findAndDestroy(request()->input('deletes'));
+        $mediaService->update(request()->input('uploads'), request()->file('uploads'), $post->id);
 
         return to_route('post.show', ["id" => $post->id]);
     }
 
 
-    public function destroy(string $id)
+    public function destroy(string $id, MediaService $mediaService)
     {
         $post = Post::findOrFail($id);
-
-        foreach ($post->media as $media) {
-            Storage::disk('public')->delete('uploads/' . $media->name);
-            $media->delete();
-        }
-
+        $mediaService->destroyMany($post->media);
         $post->delete();
 
         return to_route('dashboard.post');
