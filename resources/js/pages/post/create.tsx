@@ -27,7 +27,7 @@ type Form = {
     uploads: UploaderItem[];
 };
 
-export default function DashboardPost({ currencies }: { currencies: Currency[] }) {
+export default function DashboardPost({ currencies }: { currencies: { data: Currency[] } }) {
     const { data, setData, post, processing, errors } = useForm<Form>({
         title: '',
         description: '',
@@ -76,7 +76,7 @@ export default function DashboardPost({ currencies }: { currencies: Currency[] }
                                 <InputCurrency
                                     id="currency"
                                     required
-                                    currencies={currencies}
+                                    currencies={currencies.data}
                                     value={data.currency}
                                     onChange={(val) => setData('currency', val)}
                                 />

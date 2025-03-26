@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\PostResource;
 use App\Http\Resources\RateResource;
-use App\Models\Currency;
 use App\Models\Media;
 use App\Models\Post;
 use App\Models\Rate;
@@ -16,7 +15,7 @@ class PostController extends Controller
     public function create()
     {
         return Inertia::render('post/create', [
-            'currencies' => RateResource::colection(Rate::get())
+            'currencies' => RateResource::collection(Rate::get())
         ]);
     }
 
