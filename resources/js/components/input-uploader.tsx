@@ -7,7 +7,7 @@ import { ReactSortable } from 'react-sortablejs';
 
 export type UploaderItem = {
     id: string;
-    src?: string;
+    url?: string;
     file?: File;
 };
 
@@ -82,7 +82,7 @@ export default function InputUploader({
                             >
                                 <div className="bg-muted size-10">
                                     {u.file && <img className="h-full w-full rounded-sm object-cover" src={URL.createObjectURL(u.file)} />}
-                                    {u.src && <img className="h-full w-full rounded-sm object-cover" src={u.src} />}
+                                    {u.url && <img className="h-full w-full rounded-sm object-cover" src={u.url} />}
                                 </div>
                                 <Button variant="ghost" onClick={() => handleDelete(u.id)}>
                                     <Trash />
