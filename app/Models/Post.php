@@ -2,16 +2,13 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class User extends Authenticatable
+class Post extends Model
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory;
 
     protected $keyType = 'string';
     public $incrementing = false;
@@ -23,5 +20,9 @@ class User extends Authenticatable
         static::creating(function ($model) {
             $model->id = Str::ulid();
         });
+    }
+    public function media()
+    {
+        return $this->hasMany(Media::class, 'item_id')->orderBy('order', 'asc');
     }
 }

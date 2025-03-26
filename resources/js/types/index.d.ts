@@ -31,12 +31,29 @@ export interface SharedData {
 }
 
 export interface User {
-    id: number;
+    id: string;
     name: string;
-    email: string;
-    avatar?: string;
-    email_verified_at: string | null;
+    nickname: string;
+    description: string;
+    profile_image_url?: string;
+    provider: string;
+    provider_id: string;
     created_at: string;
     updated_at: string;
-    [key: string]: unknown; // This allows for additional properties...
+}
+
+export interface Post {
+    id: string;
+    title: string;
+    description: string;
+    created_at: string;
+    updated_at: string;
+    media: Media[];
+}
+
+export interface Media {
+    id: string;
+    src: string;
+    type: string;
+    order: number;
 }
