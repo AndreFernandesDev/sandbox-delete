@@ -45,8 +45,6 @@ export default function PostEdit({ post, currencies }: { post: Post; currencies:
         form.post(route('post.update', [post.id]));
     }
 
-    console.log(currencies);
-
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Post" />
