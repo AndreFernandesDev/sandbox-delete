@@ -7,15 +7,21 @@ use Illuminate\Support\Facades\Storage;
 
 class MediaService
 {
+    private $folder = "uploads";
+
     public function storeOne($file, $itemId, $order)
     {
+        $name = $file->hashName();
+
+        Storage::put($this->folder, $file);
+
         Media::create([
             'type' => $file->getMimeType(),
-            'name' => $file->hashName(),
+            'name' => "{$this->folder}/{$name}",
+            'url' => Storage::url("{$this->folder}/{$name}"),
             'item_id' => $itemId,
             'order' => $order,
         ]);
-        Storage::put('uploads', $file);
 
     }
 
@@ -49,7 +55,7 @@ class MediaService
 
     public function destroyOne($media)
     {
-        Storage::delete('uploads/' . $media->name);
+        Storage::disk('public')->delete($media->name);
         $media->delete();
     }
 

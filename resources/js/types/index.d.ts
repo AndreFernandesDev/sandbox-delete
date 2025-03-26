@@ -55,7 +55,7 @@ export interface Post {
 
 export interface Media {
     id: string;
-    src: string;
+    url: string;
     type: string;
     order: number;
 }

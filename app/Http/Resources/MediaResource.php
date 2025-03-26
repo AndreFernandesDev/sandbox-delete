@@ -16,7 +16,7 @@ class MediaResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'src' => "/storage/uploads/{$this->name}",
+            'url' => $this->url,
             'type' => $this->type,
             'order' => $this->order,
         ];

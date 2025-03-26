@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->integer('order');
             $table->string('type');
             $table->string('name');
+            $table->string('url');
         });
     }
 

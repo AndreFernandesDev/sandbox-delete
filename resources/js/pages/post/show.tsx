@@ -23,7 +23,7 @@ export default function DashboardPost({ post }: { post: Post }) {
                     <div className="grid grid-cols-6 gap-6 p-10">
                         {post.media.map((m) => (
                             <div key={m.id}>
-                                <img className="h-full w-full object-cover" src={m.src} />
+                                <img className="h-full w-full object-cover" src={m.url} />
                             </div>
                         ))}
                     </div>
