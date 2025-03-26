@@ -2,14 +2,14 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Currency;
+use App\Models\Rate;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 
 class UpdateCurrencyRate extends Command
 {
-    protected $signature = 'app:update-currency-rate';
-    protected $description = 'Update currency rates using CryptoMarketAPI';
+    protected $signature = 'app:update-rates';
+    protected $description = 'Update rates using CryptoMarketAPI';
 
     /**
      * Execute the console command.
@@ -27,7 +27,7 @@ class UpdateCurrencyRate extends Command
 
             $rate = number_format($data[$id]['quote'][$symbol]['price'], $precision);
 
-            Currency::updateOrCreate(['code' => $symbol], ['rate' => $rate]);
+            Rate::updateOrCreate(['code' => $symbol], ['rate' => $rate]);
         }
 
         $this->comment('Update completed.');

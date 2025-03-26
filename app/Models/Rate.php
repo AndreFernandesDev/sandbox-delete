@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Currency extends Model
+class Rate extends Model
 {
     protected $keyType = 'string';
     public $incrementing = false;

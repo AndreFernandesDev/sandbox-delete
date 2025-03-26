@@ -14,6 +14,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function DashboardPost({ post }: { post: Post }) {
+    console.log(post);
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Post" />

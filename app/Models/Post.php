@@ -25,4 +25,9 @@ class Post extends Model
     {
         return $this->hasMany(Media::class, 'item_id')->orderBy('order', 'asc');
     }
+
+    public function rate()
+    {
+        return $this->hasOne(Rate::class, 'code', 'currency');
+    }
 }

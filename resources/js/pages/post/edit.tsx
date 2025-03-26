@@ -1,10 +1,11 @@
+import InputCurrency from '@/components/input-currency';
 import InputError from '@/components/input-error';
 import InputUploader, { UploaderItem } from '@/components/input-uploader';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
-import { Post, type BreadcrumbItem } from '@/types';
+import { Currency, Post, type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import { useState } from 'react';
@@ -23,15 +24,17 @@ const breadcrumbs: BreadcrumbItem[] = [
 type Form = {
     title: string;
     description: string;
+    currency: string;
     uploads: UploaderItem[];
     deletes: string[];
 };
 
-export default function PostEdit({ post }: { post: Post }) {
+export default function PostEdit({ post, currencies }: { post: Post; currencies: { data: Currency[] } }) {
     const [status, setStatus] = useState('');
     const { data, setData, processing, errors, ...form } = useForm<Form>({
         title: post.title,
         description: post.description,
+        currency: post.currency,
         uploads: [],
         deletes: [],
     });
@@ -42,7 +45,7 @@ export default function PostEdit({ post }: { post: Post }) {
         form.post(route('post.update', [post.id]));
     }
 
-    console.log(status);
+    console.log(currencies);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -87,6 +90,18 @@ export default function PostEdit({ post }: { post: Post }) {
                                     onChange={(e) => setData('description', e.target.value)}
                                 />
                                 <InputError message={errors.title} />
+                            </div>
+
+                            <div className="grid gap-2">
+                                <Label htmlFor="currency">Currency</Label>
+                                <InputCurrency
+                                    id="currency"
+                                    required
+                                    currencies={currencies.data}
+                                    value={data.currency}
+                                    onChange={(val) => setData('currency', val)}
+                                />
+                                <InputError message={errors.currency} />
                             </div>
 
                             <Button type="submit" className="mt-4 w-full" tabIndex={4} disabled={processing || status === 'processing'}>

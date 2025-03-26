@@ -1,10 +1,11 @@
+import InputCurrency from '@/components/input-currency';
 import InputError from '@/components/input-error';
 import InputUploader, { UploaderItem } from '@/components/input-uploader';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
+import { Currency, type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 
@@ -22,13 +23,15 @@ const breadcrumbs: BreadcrumbItem[] = [
 type Form = {
     title: string;
     description: string;
+    currency: string;
     uploads: UploaderItem[];
 };
 
-export default function DashboardPost() {
+export default function DashboardPost({ currencies }: { currencies: Currency[] }) {
     const { data, setData, post, processing, errors } = useForm<Form>({
         title: '',
         description: '',
+        currency: 'BTC',
         uploads: [],
     });
 
@@ -66,6 +69,18 @@ export default function DashboardPost() {
                                 <Label htmlFor="description">Descripiton</Label>
                                 <Input id="description" required value={data.description} onChange={(e) => setData('description', e.target.value)} />
                                 <InputError message={errors.title} />
+                            </div>
+
+                            <div className="grid gap-2">
+                                <Label htmlFor="currency">Currency</Label>
+                                <InputCurrency
+                                    id="currency"
+                                    required
+                                    currencies={currencies}
+                                    value={data.currency}
+                                    onChange={(val) => setData('currency', val)}
+                                />
+                                <InputError message={errors.currency} />
                             </div>
 
                             <Button type="submit" className="mt-4 w-full" tabIndex={4} disabled={processing}>

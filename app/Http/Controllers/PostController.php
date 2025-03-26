@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\PostResource;
+use App\Http\Resources\RateResource;
+use App\Models\Currency;
 use App\Models\Media;
 use App\Models\Post;
+use App\Models\Rate;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
@@ -12,19 +15,24 @@ class PostController extends Controller
 {
     public function create()
     {
-        return Inertia::render('post/create');
+        return Inertia::render('post/create', [
+            'currencies' => RateResource::colection(Rate::get())
+        ]);
     }
 
     public function store()
     {
         request()->validate([
+            'uploads' => 'required',
             'title' => 'required|min:10',
             'description' => 'required|min:10',
+            'currency' => 'required',
         ]);
 
         $post = Post::create([
             'title' => request()->input('title'),
             'description' => request()->input('description'),
+            'currency' => request()->input('currency'),
         ]);
 
         $uploads = request()->file('uploads');
@@ -53,17 +61,21 @@ class PostController extends Controller
     public function edit(string $id)
     {
         $post = new PostResource(Post::with('media')->findOrFail($id));
+        $currencies = RateResource::collection(Rate::get());
 
         return Inertia::render('post/edit', [
-            'post' => $post
+            'post' => $post,
+            'currencies' => $currencies,
         ]);
     }
 
     public function update(string $id)
     {
         request()->validate([
+            'uploads' => 'required',
             'title' => 'required|min:10',
             'description' => 'required|min:10',
+            'currency' => 'required',
         ]);
 
         $post = Post::findOrFail($id);
@@ -71,6 +83,7 @@ class PostController extends Controller
         $post->update([
             'title' => request()->input('title'),
             'description' => request()->input('description'),
+            'currency' => request()->input('currency'),
         ]);
 
         if (request()->input('deletes')) {

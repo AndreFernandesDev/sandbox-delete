@@ -46,6 +46,8 @@ export interface Post {
     id: string;
     title: string;
     description: string;
+    currency: string;
+    rate: string;
     created_at: string;
     updated_at: string;
     media: Media[];
@@ -57,3 +59,8 @@ export interface Media {
     type: string;
     order: number;
 }
+
+export type Currency = {
+    code: string;
+    rate: string;
+};
