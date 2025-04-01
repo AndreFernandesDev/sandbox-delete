@@ -12,6 +12,7 @@ return new class extends Migration {
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->ulid('id')->primary();
+            $table->ulid('user_id');
             $table->string('title');
             $table->string('description');
             $table->timestamps();

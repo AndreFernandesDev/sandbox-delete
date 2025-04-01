@@ -4,11 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\PostResource;
 use App\Http\Resources\RateResource;
+use App\Http\Resources\TagResource;
 use App\Models\Location;
 use App\Models\Post;
 use App\Models\Rate;
+use App\Models\Tag;
+use App\Models\TagItem;
 use App\Services\MediaService;
 use Clickbar\Magellan\Data\Geometries\Point;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class PostController extends Controller
@@ -17,6 +21,7 @@ class PostController extends Controller
     {
         return Inertia::render('post/create', [
             'currencies' => RateResource::collection(Rate::get()),
+            'tags' => TagResource::collection(Tag::where('type', '=', 'post')->get()),
         ]);
     }
 
@@ -28,6 +33,7 @@ class PostController extends Controller
             'description' => 'required|min:1|max:5000',
             'currency' => 'required',
             'location' => 'required',
+            'tags' => 'required',
             'price' => 'required|numeric|gt:0'
         ]);
 
@@ -36,6 +42,7 @@ class PostController extends Controller
             'description' => request()->input('description'),
             'currency' => request()->input('currency'),
             'price' => request()->input('price'),
+            'user_id' => Auth::id(),
         ]);
 
         Location::create([
@@ -43,6 +50,13 @@ class PostController extends Controller
             'label' => request()->input('location')['label'],
             'cords' => Point::makeGeodetic(request()->input('location')['latitude'], request()->input('location')['longitude']),
         ]);
+
+        foreach (request()->input('tags') as $tag) {
+            TagItem::create([
+                'item_id' => $post->id,
+                'tag_id' => $tag['id'],
+            ]);
+        }
 
         $mediaService->storeMany(request()->file('uploads'), $post->id);
 
@@ -66,6 +80,7 @@ class PostController extends Controller
         return Inertia::render('post/edit', [
             'post' => $post,
             'currencies' => $currencies,
+            'tags' => TagResource::collection(Tag::where('type', '=', 'post')->get()),
         ]);
     }
 
@@ -77,6 +92,7 @@ class PostController extends Controller
             'description' => 'required|min:1|max:5000',
             'currency' => 'required',
             'location' => 'required',
+            'tags' => 'required',
             'price' => 'required|numeric|gt:0'
         ]);
 
@@ -95,6 +111,30 @@ class PostController extends Controller
             'cords' => Point::makeGeodetic(request()->input('location')['latitude'], request()->input('location')['longitude']),
         ]);
 
+        // Remove old tags
+        foreach ($post->tags as $tag) {
+            $isRequired = false;
+
+            foreach (request()->input('tags') as $t) {
+                if ($tag['id'] === $t['id']) {
+                    $isRequired = true;
+                    break;
+                }
+            }
+
+            if (!$isRequired || !request()->input('tags')) {
+                TagItem::where('item_id', '=', $tag->item_id)->where('tag_id', '=', $tag->tag_id)->delete();
+            }
+        }
+
+        // Add new tags
+        foreach (request()->input('tags') as $tag) {
+            TagItem::createOrFirst([
+                'item_id' => $post->id,
+                'tag_id' => $tag['id'],
+            ]);
+        }
+
         $mediaService->findAndDestroy(request()->input('deletes'));
         $mediaService->update(request()->input('uploads'), request()->file('uploads'), $post->id);
 
@@ -109,6 +149,10 @@ class PostController extends Controller
         $mediaService->destroyMany($post->media);
         $post->delete();
         $location->delete();
+
+        foreach ($post->tags as $tag) {
+            TagItem::where('item_id', '=', $tag->item_id)->where('tag_id', '=', $tag->tag_id)->delete();
+        }
 
         return to_route('dashboard.post');
     }

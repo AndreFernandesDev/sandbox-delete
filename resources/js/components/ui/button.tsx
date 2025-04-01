@@ -17,14 +17,19 @@ const buttonVariants = cva(
                     "bg-primary/10 border-primary/10 text-primary hover:border-foreground hover:text-background hover:bg-foreground",
                 destructive:
                     "bg-destructive border-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
+                    "inline-destructive": "text-primary underline-offset-4 hover:underline",
                 outline:
-                    "bg-background border-secondary text-primary shadow-sm hover:border-secondary/90 hover:text-primary/90",
+                    "bg-background border border-secondary text-primary hover:border-secondary/90 hover:text-primary/90",
+                "outline-muted":
+                    "bg-background border text-muted-foreground hover:border-secondary hover:text-muted-foreground/90",
+                "outline-muted-primary":
+                    "bg-background border border-primary text-muted-foreground hover:text-muted-foreground/90",
                 ghost: "border-transparent text-primary hover:text-primary/80",
                 link: "text-primary underline-offset-4 hover:underline",
             },
             size: {
                 default:
-                    "h-14 px-5 py-3 [&_svg]:size-5 has-[>svg]:justify-between",
+                    "h-13 px-5 py-3 [&_svg]:size-5 has-[>svg]:justify-between",
                 sm: "h-10 px-3 py-2 text-sm [&_svg]:size-4 has-[>svg]:justify-between",
                 xs: "h-8 px-3 py-2 text-sm [&_svg]:size-3 has-[>svg]:justify-between",
                 xl: "h-20 px-6 py-3 gap-6 text-xl [&_svg]:size-6 has-[>svg]:justify-between has-[[role='status']]:justify-between",

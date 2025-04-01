@@ -21,9 +21,20 @@ class Post extends Model
             $model->id = Str::ulid();
         });
     }
+
     public function media()
     {
         return $this->hasMany(Media::class, 'item_id')->orderBy('order', 'asc');
+    }
+
+    public function tags()
+    {
+        return $this->hasMany(TagItem::class, 'item_id');
+    }
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
     }
 
     public function rate()

@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@300..900&display=swap');
-
 @import 'tailwindcss';
 
 @plugin 'tailwindcss-animate';
@@ -75,6 +73,18 @@
     ::backdrop,
     ::file-selector-button {
         border-color: var(--color-gray-200, currentColor);
+    }
+
+    @font-face {
+        font-family: 'Figtree';
+        font-style: normal;
+        src: url('/fonts/body.ttf') format('truetype');
+    }
+
+    @font-face {
+        font-family: 'Figtree';
+        font-style: italic;
+        src: url('/fonts/body_italic.ttf') format('truetype');
     }
 }
 
@@ -207,9 +217,11 @@
         background-image: repeating-linear-gradient(45deg, var(--_fg) 0, var(--_fg) 1px, var(--_bg) 0, var(--_bg) 50%);
     }
 
-    .header {
-        display: grid;
-        grid-template-columns: auto 1fr repeat(3, auto);
+    @media (min-width: 48rem) {
+        .header {
+            display: grid;
+            grid-template-columns: auto 1fr repeat(3, auto) !important;
+        }
     }
 
     .expander {

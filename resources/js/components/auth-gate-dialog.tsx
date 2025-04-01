@@ -1,9 +1,8 @@
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Link } from '@inertiajs/react';
 import { useState } from 'react';
 
-export default function PostDelete({ id, children }: { id: string; children: React.ReactNode }) {
+export default function AuthGateDialog({ children }: { children: React.ReactNode }) {
     const [open, setOpen] = useState(false);
 
     return (
@@ -32,14 +31,7 @@ export default function PostDelete({ id, children }: { id: string; children: Rea
                         size="sm"
                         asChild
                     >
-                        <Link
-                            className="block"
-                            method="delete"
-                            href={route('post.destroy', [id])}
-                            as="button"
-                        >
-                            Delete this post permanently
-                        </Link>
+                        Login
                     </Button>
                 </DialogFooter>
             </DialogContent>

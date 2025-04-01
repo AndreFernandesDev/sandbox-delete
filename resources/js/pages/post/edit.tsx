@@ -2,13 +2,16 @@ import InputCurrency from '@/components/input-currency';
 import InputError from '@/components/input-error';
 import InputLabel from '@/components/input-label';
 import InputLocation from '@/components/input-location';
+import InputTags from '@/components/input-tags';
 import InputUploader, { UploaderItem } from '@/components/input-uploader';
 import InputWrapper from '@/components/input-wrapper';
+import LinksCategories from '@/components/links-categories';
+import PostDelete from '@/components/post-delete';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import MainSimpleLayout from '@/layouts/main-simple-layout';
-import { Currency, Location, Post, type BreadcrumbItem } from '@/types';
+import { Currency, Location, Post, Tag, type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import { useState } from 'react';
@@ -32,9 +35,10 @@ type Form = {
     uploads: UploaderItem[];
     deletes: string[];
     location: Location;
+    tags?: Tag[];
 };
 
-export default function PostEdit({ post, currencies }: { post: Post; currencies: { data: Currency[] } }) {
+export default function PostEdit({ post, currencies, tags }: { post: Post; currencies: { data: Currency[] }; tags: { data: Tag[] } }) {
     const [status, setStatus] = useState('');
     const { data, setData, processing, errors, ...form } = useForm<Form>({
         title: post.title,
@@ -44,6 +48,7 @@ export default function PostEdit({ post, currencies }: { post: Post; currencies:
         location: post.location,
         uploads: [],
         deletes: [],
+        tags: post.tags,
     });
 
     function submit(e: any) {
@@ -53,11 +58,39 @@ export default function PostEdit({ post, currencies }: { post: Post; currencies:
     }
 
     return (
-        <MainSimpleLayout title="Post">
+        <MainSimpleLayout
+            title="Post"
+            actions={
+                <PostDelete id={post.id}>
+                    <Button variant="inline-destructive">Delete</Button>
+                </PostDelete>
+            }
+        >
             <Head title="Post" />
             <div className="container mx-auto max-w-screen-md">
                 <form onSubmit={submit}>
                     <div className="grid gap-10 pt-10 pb-20">
+                        <InputWrapper error={errors.uploads}>
+                            <InputLabel
+                                title="Categories"
+                                description="Select a category for your post."
+                            />
+                            <LinksCategories
+                                type="post"
+                                disabled
+                            />
+                            <div className="mt-2 grid gap-4">
+                                <div className="font-medium transition-colors">Choose relevant subcategories.</div>
+                                <InputTags
+                                    tags={tags.data}
+                                    value={data.tags}
+                                    name="tags"
+                                    onChange={(tags) => setData('tags', tags)}
+                                />
+                            </div>
+                            <InputError message={errors.tags} />
+                        </InputWrapper>
+
                         <InputWrapper error={errors.uploads}>
                             <InputLabel
                                 title="Add Photos"

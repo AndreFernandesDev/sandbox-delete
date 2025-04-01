@@ -1,8 +1,9 @@
 import { Button } from '@/components/ui/button';
+import { Toaster } from '@/components/ui/sonner';
 import { Link } from '@inertiajs/react';
 import { ChevronLeft } from 'lucide-react';
 
-export default function MainSimpleLayout({ children, title }: { children: React.ReactNode; title?: string }) {
+export default function MainSimpleLayout({ children, title, actions }: { children: React.ReactNode; actions?: React.ReactNode; title?: string }) {
     return (
         <div>
             <header className="bg-background border-b">
@@ -28,10 +29,12 @@ export default function MainSimpleLayout({ children, title }: { children: React.
                         >
                             <Link href="/">Cancel</Link>
                         </Button>
+                        {actions}
                     </div>
                 </div>
             </header>
             <div className="px-5 py-10">{children}</div>
+            <Toaster />
         </div>
     );
 }

@@ -2,13 +2,15 @@ import InputCurrency from '@/components/input-currency';
 import InputError from '@/components/input-error';
 import InputLabel from '@/components/input-label';
 import InputLocation from '@/components/input-location';
+import InputTags from '@/components/input-tags';
 import InputUploader, { UploaderItem } from '@/components/input-uploader';
 import InputWrapper from '@/components/input-wrapper';
+import LinksCategories from '@/components/links-categories';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import MainSimpleLayout from '@/layouts/main-simple-layout';
-import { Currency, Location } from '@/types';
+import { Currency, Location, Tag } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 
@@ -19,9 +21,10 @@ type Form = {
     currency: string;
     uploads: UploaderItem[];
     location?: Location;
+    tags?: Tag[];
 };
 
-export default function CreatePost({ currencies }: { currencies: { data: Currency[] } }) {
+export default function CreatePost({ currencies, tags }: { currencies: { data: Currency[] }; tags: { data: Tag[] } }) {
     const { data, setData, post, processing, errors } = useForm<Form>({
         title: '',
         description: '',
@@ -40,6 +43,23 @@ export default function CreatePost({ currencies }: { currencies: { data: Currenc
             <div className="container mx-auto max-w-screen-md">
                 <form onSubmit={submit}>
                     <div className="grid gap-10 pt-10 pb-20">
+                        <InputWrapper error={errors.uploads}>
+                            <InputLabel
+                                title="Categories"
+                                description="Select a category for your post."
+                            />
+                            <LinksCategories type="post" />
+                            <div className="mt-2 grid gap-4">
+                                <div className="font-medium transition-colors">Choose relevant subcategories.</div>
+                                <InputTags
+                                    tags={tags.data}
+                                    name="tags"
+                                    onChange={(tags) => setData('tags', tags)}
+                                />
+                            </div>
+                            <InputError message={errors.tags} />
+                        </InputWrapper>
+
                         <InputWrapper error={errors.uploads}>
                             <InputLabel
                                 title="Add Photos"
@@ -83,7 +103,7 @@ export default function CreatePost({ currencies }: { currencies: { data: Currenc
                         <InputWrapper error={errors.price}>
                             <InputLabel
                                 title="Price"
-                                description="Enter the amount you want to receive. The currency is based on your selected location.."
+                                description="Enter the amount you want to receive. The currency is based on USD dollars."
                             />
                             <Input
                                 id="price"

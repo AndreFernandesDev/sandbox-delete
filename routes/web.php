@@ -1,15 +1,13 @@
 <?php
 
+use App\Http\Controllers\AppController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('welcome');
-})->name('home');
+Route::get('/', [AppController::class, 'index'])->name('home');
 
 Route::get('/auth/redirect', [UserController::class, 'redirect'])->name('auth.redirect');
 Route::get('/auth/callback', [UserController::class, 'callback'])->name('auth.callback');

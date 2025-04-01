@@ -39,6 +39,7 @@ export interface User {
     provider: string;
     provider_id: string;
     created_at: string;
+    created_at_humans: string;
     updated_at: string;
 }
 
@@ -49,10 +50,16 @@ export interface Post {
     currency: string;
     rate: string;
     created_at: string;
-    updated_at: string;
-    media: Media[];
-    location: Location;
     price: number;
+    crypto: number;
+    created_at_humans: string;
+    created_at_diff: string;
+    updated_at: string;
+    updated_at_diff: string;
+    media: Media[];
+    tags: Tag[];
+    location: Location;
+    user: User;
 }
 
 export interface Media {
@@ -71,4 +78,9 @@ export type Location = {
     latitude: number;
     longitude: number;
     label: string;
+};
+
+export type Tag = {
+    id: string;
+    name: string;
 };
