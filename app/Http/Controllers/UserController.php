@@ -17,7 +17,7 @@ class UserController extends Controller
     public function callback()
     {
         $oauth = Socialite::driver('x')->user();
-        $oauthUser = Http::withToken($oauth->token)->get("https://api.twitter.com/2/users/me?user.fields=profile_image_url,description,username")->object()->data;
+        $oauthUser = Http::withToken($oauth->token)->get('https://api.twitter.com/2/users/me?user.fields=profile_image_url,description,username')->object()->data;
 
         $user = User::updateOrCreate([
             'provider_id' => $oauthUser->id,

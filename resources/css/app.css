@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@300..900&display=swap');
+
 @import 'tailwindcss';
 
 @plugin 'tailwindcss-animate';
@@ -8,8 +10,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-    --font-sans:
-        'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'Figtree', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 
     --radius-lg: var(--radius);
     --radius-md: calc(var(--radius) - 2px);
@@ -84,25 +85,38 @@
     --card-foreground: oklch(0.145 0 0);
     --popover: oklch(1 0 0);
     --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.205 0 0);
-    --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.97 0 0);
-    --secondary-foreground: oklch(0.205 0 0);
+
+    --primary: hsl(23 100% 50%);
+    --primary-foreground: hsl(210 40% 98%);
+    /*--primary: oklch(0.205 0 0);*/
+    /*--primary-foreground: oklch(0.985 0 0);*/
+
+    --secondary: hsl(20 83% 77%);
+    --secondary-foreground: hsl(222.2 47.4% 11.2%);
+    /*--secondary: oklch(0.97 0 0);*/
+    /*--secondary-foreground: oklch(0.205 0 0);*/
+
     --muted: oklch(0.97 0 0);
     --muted-foreground: oklch(0.556 0 0);
     --accent: oklch(0.97 0 0);
     --accent-foreground: oklch(0.205 0 0);
     --destructive: oklch(0.577 0.245 27.325);
-    --destructive-foreground: oklch(0.577 0.245 27.325);
+    --destructive-foreground: oklch(1 0 0);
+
+    /*--border: hsl(0 0% 14.9%);*/
     --border: oklch(0.922 0 0);
-    --input: oklch(0.922 0 0);
-    --ring: oklch(0.87 0 0);
+
+    --input: hsl(20 83% 77%);
+    /*--input: oklch(0.922 0 0);*/
+
+    --ring: hsl(20 83% 77%);
+    /*--ring: oklch(0.87 0 0);*/
+
     --chart-1: oklch(0.646 0.222 41.116);
     --chart-2: oklch(0.6 0.118 184.704);
     --chart-3: oklch(0.398 0.07 227.392);
     --chart-4: oklch(0.828 0.189 84.429);
     --chart-5: oklch(0.769 0.188 70.08);
-    --radius: 0.625rem;
     --sidebar: oklch(0.985 0 0);
     --sidebar-foreground: oklch(0.145 0 0);
     --sidebar-primary: oklch(0.205 0 0);
@@ -111,6 +125,8 @@
     --sidebar-accent-foreground: oklch(0.205 0 0);
     --sidebar-border: oklch(0.922 0 0);
     --sidebar-ring: oklch(0.87 0 0);
+
+    --radius: 0.5rem;
 }
 
 .dark {
@@ -154,6 +170,93 @@
     }
 
     body {
-        @apply bg-background text-foreground;
+        @apply text-foreground bg-[#FFFDFC];
+    }
+
+    .pattern-polka {
+        --_bg: transparent;
+        --_fg: currentColor;
+        background-color: var(--_bg);
+        background-image: radial-gradient(var(--_fg) 0.5px, var(--_bg) 0.5px);
+        background-size: 10px 10px;
+    }
+
+    .pattern-polka-2 {
+        --_bg: transparent;
+        --_fg: currentColor;
+        background-color: var(--_bg);
+        background-image: radial-gradient(var(--_fg) 0.75px, transparent 0.75px), radial-gradient(var(--_fg) 0.75px, var(--_bg) 0.75px);
+        background-size: 30px 30px;
+        background-position:
+            0 0,
+            15px 15px;
+    }
+
+    .pattern-diagonal {
+        --_bg: transparent;
+        --_fg: currentColor;
+        background-color: var(--_bg);
+        background: repeating-linear-gradient(45deg, var(--_fg), var(--_fg) 5px, var(--_bg) 5px, var(--_bg) 25px);
+    }
+
+    .pattern-diagonal-3 {
+        --_bg: transparent;
+        --_fg: currentColor;
+        background-color: var(--_bg);
+        background-size: 10px 10px;
+        background-image: repeating-linear-gradient(45deg, var(--_fg) 0, var(--_fg) 1px, var(--_bg) 0, var(--_bg) 50%);
+    }
+
+    .header {
+        display: grid;
+        grid-template-columns: auto 1fr repeat(3, auto);
+    }
+
+    .expander {
+        display: grid;
+        grid-template-rows: 0fr;
+        opacity: 0;
+        overflow: hidden;
+        transition: all 250ms ease;
+    }
+
+    .expander-content {
+        min-height: 0;
+        visibility: hidden;
+    }
+
+    .expander.expanded {
+        grid-template-rows: 1fr;
+        opacity: 1;
+    }
+
+    .expander.expanded .expander-content {
+        visibility: visible;
+    }
+
+    .listing-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        box-sizing: border-box;
+        justify-content: start;
+        align-items: start;
+        gap: 1px;
+    }
+
+    @media (min-width: 32rem) {
+        .listing-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (min-width: 48rem) {
+        .listing-grid {
+            grid-template-columns: repeat(auto-fit, minmax(min(24rem, 100%), 1fr));
+        }
+    }
+
+    .listing-item-grid {
+        display: grid;
+        grid-template-columns: min(8rem, 100%) 1fr auto auto auto;
     }
 }

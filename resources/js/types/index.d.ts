@@ -51,6 +51,8 @@ export interface Post {
     created_at: string;
     updated_at: string;
     media: Media[];
+    location: Location;
+    price: number;
 }
 
 export interface Media {
@@ -63,4 +65,10 @@ export interface Media {
 export type Currency = {
     code: string;
     rate: string;
+};
+
+export type Location = {
+    latitude: number;
+    longitude: number;
+    label: string;
 };

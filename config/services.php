@@ -38,7 +38,7 @@ return [
     'x' => [
         'client_id' => env('X_CLIENT_ID'),
         'client_secret' => env('X_CLIENT_SECRET'),
-        'redirect' => env("APP_URL") . '/auth/callback',
+        'redirect' => env('APP_URL').'/auth/callback',
     ],
 
 ];

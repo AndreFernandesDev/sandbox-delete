@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LocationController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -14,6 +15,8 @@ Route::get('/auth/redirect', [UserController::class, 'redirect'])->name('auth.re
 Route::get('/auth/callback', [UserController::class, 'callback'])->name('auth.callback');
 Route::post('/auth/logout', [UserController::class, 'logout'])->name('auth.logout');
 
+Route::post('/location', [LocationController::class, 'search'])->name('location.search');
+
 Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/post', [DashboardController::class, 'postView'])->name('dashboard.post');
@@ -26,9 +29,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/posts/{id}/edit', [PostController::class, 'edit'])->name('post.edit');
     Route::post('/posts/{id}/update', [PostController::class, 'update'])->name('post.update');
     Route::delete('/posts/{id}', [PostController::class, 'destroy'])->name('post.destroy');
-
 });
-
 
 
 require __DIR__ . '/settings.php';

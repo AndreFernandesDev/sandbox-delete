@@ -8,14 +8,14 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table->string('currency')->default("USDC");
+            $table->integer('price')->default(1);
         });
     }
 
     public function down(): void
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table->dropColumn('currency');
+            $table->dropColumn('price');
         });
     }
 };

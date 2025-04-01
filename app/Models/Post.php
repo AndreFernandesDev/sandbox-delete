@@ -30,4 +30,9 @@ class Post extends Model
     {
         return $this->hasOne(Rate::class, 'code', 'currency');
     }
+
+    public function location()
+    {
+        return $this->hasOne(Location::class, 'item_id', 'id');
+    }
 }

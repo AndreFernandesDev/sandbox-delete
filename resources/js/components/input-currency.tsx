@@ -22,12 +22,27 @@ export default function InputCurrency({
     onChange?: (val: string) => void;
 }) {
     return (
-        <RadioGroup id={id} onValueChange={(value) => onChange?.(value)} defaultValue={value ? value : currencies[0].code}>
-            <div className="flex gap-x-4">
+        <RadioGroup
+            id={id}
+            onValueChange={(value) => onChange?.(value)}
+            defaultValue={value ? value : currencies[0].code}
+        >
+            <div className="flex flex-col gap-8 sm:flex-row">
                 {currencies.map((c) => (
-                    <div key={c.code} className="flex items-center space-x-2">
-                        <RadioGroupItem value={c.code} id={c.code} />
-                        <Label htmlFor={c.code}>{c.code}</Label>
+                    <div
+                        key={c.code}
+                        className="flex items-center space-x-2"
+                    >
+                        <RadioGroupItem
+                            value={c.code}
+                            id={c.code}
+                        />
+                        <Label
+                            htmlFor={c.code}
+                            className="text-lg"
+                        >
+                            {c.code}
+                        </Label>
                     </div>
                 ))}
             </div>

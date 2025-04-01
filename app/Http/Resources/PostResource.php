@@ -12,12 +12,15 @@ class PostResource extends JsonResource
     public function toArray(Request $request): array
     {
         $rate = new RateResource($this->rate);
+        $location = new LocationResource($this->location);
 
         return [
             'id' => $this->id,
             'title' => $this->title,
             'description' => $this->description,
+            'price' => $this->price,
             'media' => MediaResource::collection($this->media),
+            'location' => $location,
             'currency' => $this->currency,
             'rate' => $rate['rate'],
             'created_at' => $this->created_at,
