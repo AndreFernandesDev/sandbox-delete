@@ -6,6 +6,7 @@ import { usePage } from '@inertiajs/react';
 import axios from 'axios';
 import { LucideSearch, RotateCcw, X } from 'lucide-react';
 import { useState } from 'react';
+import AuthGateDialog from './auth-gate-dialog';
 import InputLocation from './input-location';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -64,10 +65,12 @@ export default function InputSearch() {
                     </Button>
                 </div>
 
-                <InputLocation
-                    value={auth.session?.location}
-                    onChange={handleLocation}
-                />
+                <AuthGateDialog>
+                    <InputLocation
+                        value={auth.session?.location}
+                        onChange={handleLocation}
+                    />
+                </AuthGateDialog>
 
                 {auth.session?.location && (
                     <Button
