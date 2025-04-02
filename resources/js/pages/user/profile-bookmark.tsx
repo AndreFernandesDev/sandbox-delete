@@ -1,4 +1,4 @@
-import { BannerInfo } from '@/components/banner-info';
+import { CardInfo } from '@/components/card-info';
 import Container from '@/components/container';
 import PostList from '@/components/post-list';
 import { Button } from '@/components/ui/button';
@@ -57,7 +57,7 @@ export default function ProfileBookmarkPage({ posts }: { posts: { data: Post[] }
                 {posts.data.length ? (
                     <PostList posts={posts.data} />
                 ) : (
-                    <BannerInfo
+                    <CardInfo
                         title="Empty bookmarks"
                         description="A little bit of searching should fix the problem"
                     >
@@ -67,7 +67,7 @@ export default function ProfileBookmarkPage({ posts }: { posts: { data: Post[] }
                         >
                             <Link href="/">Go to homepage</Link>
                         </Button>
-                    </BannerInfo>
+                    </CardInfo>
                 )}
             </Container>
         </MainLayout>

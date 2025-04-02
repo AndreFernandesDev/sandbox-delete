@@ -24,6 +24,7 @@ export interface NavItem {
 
 export interface SharedData {
     name: string;
+    banner?: Banner;
     quote: { message: string; author: string };
     auth: Auth;
     ziggy: Config & { location: string };
@@ -67,6 +68,7 @@ export interface Media {
     id: string;
     url: string;
     type: string;
+    code: string;
     order: number;
 }
 
@@ -84,4 +86,16 @@ export type Location = {
 export type Tag = {
     id: string;
     name: string;
+};
+
+export type Banner = {
+    id: string;
+    title: string;
+    label: string;
+    cta: string;
+    url: string;
+    background: string;
+    foreground: string;
+    is_active: boolean;
+    logo: Media;
 };

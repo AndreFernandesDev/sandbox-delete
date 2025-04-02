@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AppController;
+use App\Http\Controllers\BannerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\PostController;
@@ -18,11 +19,18 @@ Route::post('/location', [LocationController::class, 'search'])->name('location.
 Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/post', [DashboardController::class, 'postView'])->name('dashboard.post');
-    Route::post('/dashboard/post', [DashboardController::class, 'store'])->name('dashboard.store');
+    Route::get('/dashboard/banners', [DashboardController::class, 'bannerView'])->name('dashboard.banner');
+
 
     Route::get('/profile', [AppController::class, 'profile'])->name('profile');
     Route::get('/profile/bookmark', [AppController::class, 'profileBookmark'])->name('profile.bookmark');
 
+    Route::get('/banners/create', [BannerController::class, 'create'])->name('banner.create');
+    Route::post('/banners/store', [BannerController::class, 'store'])->name('banner.store');
+    Route::get('/banners/{id}/edit', [BannerController::class, 'edit'])->name('banner.edit');
+    Route::post('/banners/{id}/update', [BannerController::class, 'update'])->name('banner.update');
+    Route::post('/banners/{id}/active', [BannerController::class, 'active'])->name('banner.active');
+    Route::delete('/banners/{id}', [BannerController::class, 'destroy'])->name('banner.destroy');
 
     Route::get('/posts', [PostController::class, 'index'])->name('post.index');
     Route::get('/posts/create', [PostController::class, 'create'])->name('post.create');
@@ -31,6 +39,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/posts/{id}/update', [PostController::class, 'update'])->name('post.update');
     Route::post('/posts/{id}/status', [PostController::class, 'status'])->name('post.status');
     Route::delete('/posts/{id}', [PostController::class, 'destroy'])->name('post.destroy');
+
 });
 
 Route::get('/user/{id}', [UserController::class, 'show'])->name('user.show');

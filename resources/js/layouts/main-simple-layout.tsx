@@ -3,7 +3,19 @@ import { Toaster } from '@/components/ui/sonner';
 import { Link } from '@inertiajs/react';
 import { ChevronLeft } from 'lucide-react';
 
-export default function MainSimpleLayout({ children, title, actions }: { children: React.ReactNode; actions?: React.ReactNode; title?: string }) {
+export default function MainSimpleLayout({
+    children,
+    title,
+    actions,
+    cancelLink,
+    backLink,
+}: {
+    children: React.ReactNode;
+    actions?: React.ReactNode;
+    title?: string;
+    cancelLink?: string;
+    backLink?: string;
+}) {
     return (
         <div>
             <header className="bg-background border-b">
@@ -13,7 +25,7 @@ export default function MainSimpleLayout({ children, title, actions }: { childre
                         variant="ghost"
                         asChild
                     >
-                        <Link href="/">
+                        <Link href={backLink ?? '/'}>
                             <ChevronLeft className="size-5" />
                         </Link>
                     </Button>
@@ -27,7 +39,7 @@ export default function MainSimpleLayout({ children, title, actions }: { childre
                             className="text-muted-foreground"
                             asChild
                         >
-                            <Link href="/">Cancel</Link>
+                            <Link href={cancelLink ?? '/'}>Cancel</Link>
                         </Button>
                         {actions}
                     </div>

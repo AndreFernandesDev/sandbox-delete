@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BannerResource;
+use App\Models\Banner;
 use App\Models\Media;
 use App\Models\Post;
 use Illuminate\Support\Facades\Storage;
@@ -18,6 +20,13 @@ class DashboardController extends Controller
     {
         return Inertia::render('dashboard/post', [
             "posts" => Post::latest()->get(),
+        ]);
+    }
+
+    public function bannerView()
+    {
+        return Inertia::render('dashboard/banner', [
+            "banners" => BannerResource::collection(Banner::latest()->get()),
         ]);
     }
 

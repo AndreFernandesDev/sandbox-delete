@@ -1,4 +1,4 @@
-import { BannerInfo } from '@/components/banner-info';
+import { CardInfo } from '@/components/card-info';
 import Container from '@/components/container';
 import PostList from '@/components/post-list';
 import ProfileTabs from '@/components/profile-tabs';
@@ -28,7 +28,7 @@ export default function ProfilePage({ posts }: { posts: { data: Post[] } }) {
                 {posts.data.length ? (
                     <PostList posts={posts.data} />
                 ) : (
-                    <BannerInfo
+                    <CardInfo
                         title="No active posts"
                         description="Seems like it is time to start your journey!"
                     >
@@ -38,7 +38,7 @@ export default function ProfilePage({ posts }: { posts: { data: Post[] } }) {
                         >
                             <Link href="/posts/create">Start new post</Link>
                         </Button>
-                    </BannerInfo>
+                    </CardInfo>
                 )}
             </Container>
         </MainLayout>

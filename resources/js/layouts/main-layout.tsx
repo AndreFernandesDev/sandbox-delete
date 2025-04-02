@@ -1,4 +1,5 @@
 import AuthGateDialog from '@/components/auth-gate-dialog';
+import BannerThumbnail, { BannerThumbnailVariant } from '@/components/banner-thumbnail';
 import InputLocation from '@/components/input-location';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -10,12 +11,12 @@ import { Link, usePage } from '@inertiajs/react';
 import { ChevronDown, LucideEdit, LucideSearch, RotateCcw, X } from 'lucide-react';
 import { useState } from 'react';
 
-export default function MainLayout({ children }: { children: React.ReactNode }) {
-    const { auth } = usePage<SharedData>().props;
+export default function MainLayout({ children, bannerVariant = 'header' }: { children: React.ReactNode; bannerVariant?: BannerThumbnailVariant }) {
+    const { auth, banner } = usePage<SharedData>().props;
 
     return (
         <div>
-            <div className="block">
+            <div className={cn('block', bannerVariant == 'header' && 'hidden md:block')}>
                 <header className="bg-background header relative z-40 grid grid-cols-2 items-center gap-3 border-b px-5 pt-6 pb-3 md:gap-3 md:px-8 md:pb-6">
                     <Link href="/">
                         <img
@@ -24,7 +25,6 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                         />
                     </Link>
 
-                    {/* <AppSearch /> */}
                     <InputSearch />
 
                     <div className="order-2 grid md:order-none">
@@ -101,8 +101,13 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                         )}
                     </div>
                 </header>
-                {/* <AdRandomBanner variant="header" /> */}
             </div>
+            {banner && (
+                <BannerThumbnail
+                    banner={banner}
+                    variant={bannerVariant}
+                />
+            )}
             {children}
         </div>
     );

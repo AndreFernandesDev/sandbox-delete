@@ -4,7 +4,7 @@ import { Post } from '@/types';
 
 export default function Welcome({ posts }: { posts: { data: Post[] } }) {
     return (
-        <MainLayout>
+        <MainLayout bannerVariant="lg">
             <PostList posts={posts.data} />
         </MainLayout>
     );

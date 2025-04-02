@@ -2,7 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Resources\BannerResource;
 use App\Http\Resources\UserResource;
+use App\Models\Banner;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -40,10 +42,13 @@ class HandleInertiaRequests extends Middleware
     {
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
         $user = $request->user() ? new UserResource($request->user()) : $request->user();
+        $banner = Banner::inRandomOrder()->where("is_active", "=", "true")->first();
+        $banner = $banner ? new BannerResource($banner) : null;
 
         return [
             ...parent::share($request),
             'name' => config('app.name'),
+            'banner' => $banner,
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
                 'user' => $user,

@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 
-export function BannerInfo({
+export function CardInfo({
     title,
     description,
     className,

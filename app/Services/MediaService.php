@@ -9,7 +9,7 @@ class MediaService
 {
     private $folder = "uploads";
 
-    public function storeOne($file, $itemId, $order)
+    public function storeOne($file, $itemId, $order, $code = "display")
     {
         $name = $file->hashName();
 
@@ -21,6 +21,7 @@ class MediaService
             'url' => Storage::url("{$this->folder}/{$name}"),
             'item_id' => $itemId,
             'order' => $order,
+            'code' => $code,
         ]);
 
     }
@@ -30,7 +31,6 @@ class MediaService
         foreach ($files as $i => $file) {
             $this->storeOne($file["file"], $itemId, $i);
         }
-
     }
 
     public function update($uploads, $files, $itemId)

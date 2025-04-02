@@ -1,4 +1,4 @@
-import { BannerInfo } from '@/components/banner-info';
+import { CardInfo } from '@/components/card-info';
 import Container from '@/components/container';
 import PostList from '@/components/post-list';
 import { Button } from '@/components/ui/button';
@@ -36,7 +36,7 @@ export default function UserShow({ user, posts }: { user: User; posts: { data: P
                 {posts.data.length ? (
                     <PostList posts={posts.data} />
                 ) : (
-                    <BannerInfo
+                    <CardInfo
                         title="No active posts"
                         description="Seems like everything has been sold for now"
                     >
@@ -46,7 +46,7 @@ export default function UserShow({ user, posts }: { user: User; posts: { data: P
                         >
                             <Link href="/">Back home</Link>
                         </Button>
-                    </BannerInfo>
+                    </CardInfo>
                 )}
             </Container>
         </MainLayout>

@@ -14,7 +14,6 @@ import MainSimpleLayout from '@/layouts/main-simple-layout';
 import { Currency, Location, Post, Tag, type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
-import { useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -39,7 +38,6 @@ type Form = {
 };
 
 export default function PostEdit({ post, currencies, tags }: { post: Post; currencies: { data: Currency[] }; tags: { data: Tag[] } }) {
-    const [status, setStatus] = useState('');
     const { data, setData, processing, errors, ...form } = useForm<Form>({
         title: post.title,
         description: post.description,
@@ -60,6 +58,8 @@ export default function PostEdit({ post, currencies, tags }: { post: Post; curre
     return (
         <MainSimpleLayout
             title="Post"
+            backLink={`/posts/${post.id}`}
+            cancelLink={`/posts/${post.id}`}
             actions={
                 <PostDelete id={post.id}>
                     <Button variant="inline-destructive">Delete</Button>

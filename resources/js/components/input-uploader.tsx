@@ -5,6 +5,7 @@ import { GalleryVerticalEnd, Star, Trash } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { ReactSortable } from 'react-sortablejs';
+import { toast } from 'sonner';
 
 export type UploaderItem = {
     id: string;
@@ -62,8 +63,19 @@ export default function InputUploader({
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDropAccepted(files) {
+            if (uploads.length >= maxFiles) {
+                return toast.error('Limit reached');
+            }
+
             const updated = [...uploads, ...files.map((f) => ({ id: f.name, file: f })).filter((f) => !uploads.find((u) => u.id === f.id))];
             setUploads(updated);
+        },
+        onDropRejected(fileRejections) {
+            toast.error(fileRejections[0].errors[0].message);
+        },
+        onError(err) {
+            console.log(err);
+            toast.error(err.message);
         },
         maxFiles,
         accept: { 'image/*': ['.jpeg', '.png'] },
