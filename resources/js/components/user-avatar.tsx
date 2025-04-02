@@ -8,6 +8,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 export default function UserAvatar({ user }: { user: User }) {
     const { auth } = usePage<SharedData>().props;
     const isMe = user.id === auth.user?.id;
+    const isAdmin = auth.user?.role == 'admin';
 
     return (
         <div className="mx-auto grid max-w-sm gap-4">
@@ -40,7 +41,7 @@ export default function UserAvatar({ user }: { user: User }) {
                             className="w-48"
                             align="end"
                         >
-                            {isMe && false && (
+                            {isMe && isAdmin && (
                                 <DropdownMenuItem asChild>
                                     <Link href="/dashboard">Manage App</Link>
                                 </DropdownMenuItem>

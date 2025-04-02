@@ -18,9 +18,12 @@ class UserResource extends JsonResource
             'nickname' => $this->nickname,
             'description' => $this->description,
             'profile_image_url' => $this->profile_image_url,
+            'role' => $this->role,
+
             'created_at' => $this->created_at,
-            'created_at_humans' => Carbon::parse($this->created_at)->format('F Y'),
             'updated_at' => $this->updated_at,
+
+            'created_at_humans' => Carbon::parse($this->created_at)->format('F Y'),
         ];
     }
 }

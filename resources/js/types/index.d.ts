@@ -39,9 +39,12 @@ export interface User {
     profile_image_url?: string;
     provider: string;
     provider_id: string;
+    role: string;
+
     created_at: string;
-    created_at_humans: string;
     updated_at: string;
+
+    created_at_humans: string;
 }
 
 export interface Post {
@@ -50,18 +53,21 @@ export interface Post {
     description: string;
     currency: string;
     rate: string;
-    created_at: string;
     price: number;
     crypto: number;
     status: string;
-    created_at_humans: string;
-    created_at_diff: string;
-    updated_at: string;
-    updated_at_diff: string;
+
     media: Media[];
     tags: Tag[];
     location: Location;
     user: User;
+
+    created_at: string;
+    updated_at: string;
+
+    created_at_humans: string;
+    created_at_diff: string;
+    updated_at_diff: string;
 }
 
 export interface Media {
@@ -97,5 +103,6 @@ export type Banner = {
     background: string;
     foreground: string;
     is_active: boolean;
+
     logo: Media;
 };
