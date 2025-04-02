@@ -111,7 +111,7 @@ function BannerThumbnailLarge({ banner }: { banner: Banner }) {
                 <a
                     href={banner.url}
                     target="_blank"
-                    className="flex cursor-pointer items-center gap-1.5 text-lg transition-colors hover:opacity-80"
+                    className="flex cursor-pointer items-center gap-1.5 text-sm transition-colors hover:opacity-80 md:text-lg"
                 >
                     <span>{banner.cta}</span>
                     <ChevronRight className="w-3.5" />
