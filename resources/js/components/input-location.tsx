@@ -122,6 +122,7 @@ export default function InputLocation({
                                     value={search}
                                     onChange={handleSearchChange}
                                     onClick={() => setOpenSearch(true)}
+                                    autoComplete="false"
                                 />
                             </div>
 
