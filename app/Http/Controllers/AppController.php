@@ -26,9 +26,11 @@ class AppController extends Controller
         }
 
         if (count($tags) > 0) {
-            foreach ($tags as $tag) {
-                $posts->orWhereRelation("tags", "tag_id", "=", $tag);
-            }
+            $posts = $posts->where(function ($query) use ($tags) {
+                foreach ($tags as $tag) {
+                    $query->orWhereRelation("tags", "tag_id", "=", $tag);
+                }
+            });
         }
 
         if ($location) {
