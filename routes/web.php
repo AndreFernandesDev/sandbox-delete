@@ -44,6 +44,7 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [AppController::class, 'profile'])->name('profile');
     Route::get('/profile/bookmark', [AppController::class, 'profileBookmark'])->name('profile.bookmark');
+    Route::get('/profile/archive', [AppController::class, 'profileArchive'])->name('profile.archive');
 });
 
 // Posts

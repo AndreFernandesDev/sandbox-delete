@@ -69,6 +69,7 @@ export interface Post {
 
     created_at: string;
     updated_at: string;
+    expires_at: string;
 
     created_at_humans: string;
     created_at_diff: string;

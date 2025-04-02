@@ -24,25 +24,30 @@ class PostResource extends JsonResource
             array_push($tags, $t);
         }
 
+        $crypto = number_format($rate['rate'] * $this->price, 6);
+        $media = MediaResource::collection($this->media);
+
         return [
             'id' => $this->id,
             'title' => $this->title,
             'description' => $this->description,
             'price' => $this->price,
-            'media' => MediaResource::collection($this->media),
+            'currency' => $this->currency,
+            'status' => $this->status?->type,
+            'crypto' => $crypto,
+            'media' => $media,
             'tags' => $tags,
             'location' => $location,
-            'currency' => $this->currency,
             'rate' => $rate['rate'],
-            'crypto' => number_format($rate['rate'] * $this->price, 6),
             'user' => $user,
-            'status' => $this->status?->type,
+
             'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+            'expires_at' => $this->expires_at,
+
             'created_at_diff' => $this->created_at->diffForHumans(),
             'created_at_humans' => Carbon::parse($this->created_at)->format('F Y'),
-            'updated_at' => $this->updated_at,
             'updated_at_diff' => $this->updated_at->diffForHumans(),
-
         ];
     }
 }

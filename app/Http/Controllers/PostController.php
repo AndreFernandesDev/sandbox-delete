@@ -12,6 +12,7 @@ use App\Models\Status;
 use App\Models\Tag;
 use App\Models\TagItem;
 use App\Services\MediaService;
+use Carbon\Carbon;
 use Clickbar\Magellan\Data\Geometries\Point;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -40,11 +41,12 @@ class PostController extends Controller
         ]);
 
         $post = Post::create([
+            'user_id' => Auth::id(),
             'title' => request()->input('title'),
             'description' => request()->input('description'),
             'currency' => request()->input('currency'),
             'price' => request()->input('price'),
-            'user_id' => Auth::id(),
+            'expires_at' => Carbon::now()->addDays(30),
         ]);
 
         Location::create([
@@ -101,11 +103,14 @@ class PostController extends Controller
         $post = Post::findOrFail($id);
         $location = Location::where('item_id', '=', $id)->firstOrFail();
 
+        $isReadyToRenew = request()->input('renew') && $post->expires_at < Carbon::now()->addDays(7);
+
         $post->update([
             'title' => request()->input('title'),
             'description' => request()->input('description'),
             'currency' => request()->input('currency'),
             'price' => request()->input('price'),
+            'expires_at' => $isReadyToRenew ? Carbon::now()->addDays(30) : $post->expires_at,
         ]);
 
         $location->update([

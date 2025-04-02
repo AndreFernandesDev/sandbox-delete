@@ -6,6 +6,7 @@ use App\Http\Resources\PostResource;
 use App\Http\Resources\TagResource;
 use App\Models\Post;
 use App\Models\Tag;
+use Carbon\Carbon;
 use Clickbar\Magellan\Data\Geometries\Point;
 use Clickbar\Magellan\Database\PostgisFunctions\ST;
 use Illuminate\Support\Facades\Auth;
@@ -41,6 +42,8 @@ class AppController extends Controller
             $posts = $posts->whereRelation("location", ST::distanceSphere($pos, 'cords'), '<=', $distance);
         }
 
+        $posts->where('expires_at', '>', Carbon::now());
+
         $posts = $posts->get();
 
 
@@ -68,6 +71,17 @@ class AppController extends Controller
         );
 
         return Inertia::render('user/profile-bookmark', [
+            'posts' => $posts
+        ]);
+    }
+
+    public function profileArchive()
+    {
+        $posts = PostResource::collection(
+            Post::where("expires_at", "<", Carbon::now())->get()
+        );
+
+        return Inertia::render('user/profile-archive', [
             'posts' => $posts
         ]);
     }

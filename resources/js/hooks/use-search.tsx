@@ -1,5 +1,6 @@
 import { useForm } from '@inertiajs/react';
 import { useEffect, useRef } from 'react';
+import useQueryParams from './use-query-params';
 
 type Form = {
     search: string;
@@ -8,9 +9,10 @@ type Form = {
 
 export function useSearch() {
     const init = useRef({ ok: false });
+    const params = useQueryParams();
 
-    const search = new URLSearchParams(window.location.search).get('search');
-    const tags = new URLSearchParams(window.location.search).get('tags');
+    const search = params.search ?? '';
+    const tags = params.tag ?? '';
 
     const form = useForm<Form>({
         search: search ?? '',

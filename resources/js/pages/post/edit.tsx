@@ -10,10 +10,11 @@ import PostDelete from '@/components/post-delete';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import useQueryParams from '@/hooks/use-query-params';
 import MainSimpleLayout from '@/layouts/main-simple-layout';
 import { Currency, Location, Post, Tag, type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
-import { LoaderCircle } from 'lucide-react';
+import { ArrowRight, LoaderCircle } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -35,9 +36,13 @@ type Form = {
     deletes: string[];
     location: Location;
     tags?: Tag[];
+    renew?: boolean;
 };
 
 export default function PostEdit({ post, currencies, tags }: { post: Post; currencies: { data: Currency[] }; tags: { data: Tag[] } }) {
+    const params = useQueryParams();
+    const renew = params.renew ?? '';
+
     const { data, setData, processing, errors, ...form } = useForm<Form>({
         title: post.title,
         description: post.description,
@@ -47,6 +52,7 @@ export default function PostEdit({ post, currencies, tags }: { post: Post; curre
         uploads: [],
         deletes: [],
         tags: post.tags,
+        renew: !!renew,
     });
 
     function submit(e: any) {
@@ -176,16 +182,28 @@ export default function PostEdit({ post, currencies, tags }: { post: Post; curre
                             />
                             <InputError message={errors.description} />
                         </InputWrapper>
-
-                        <Button
-                            type="submit"
-                            className="mt-4 w-full"
-                            tabIndex={4}
-                            disabled={processing}
-                        >
-                            {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                            Post
-                        </Button>
+                        <div className="grid gap-4">
+                            <Button
+                                type="submit"
+                                className="w-full justify-between"
+                                variant="primary"
+                                size="xl"
+                                disabled={processing}
+                            >
+                                {renew ? 'Renew' : 'Update'}
+                                <div>
+                                    {processing ? (
+                                        <LoaderCircle className="h-4 w-4 animate-spin" />
+                                    ) : (
+                                        <div className="flex items-center gap-2">
+                                            Free
+                                            <ArrowRight />
+                                        </div>
+                                    )}
+                                </div>
+                            </Button>
+                            <p className="text-muted-foreground bg-muted rounded px-6 py-4">Your post will expire in 30 days unless renewed.</p>
+                        </div>
                     </div>
                 </form>
             </div>

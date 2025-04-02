@@ -4,24 +4,21 @@ import IconLib from '@/components/icon-custom';
 import PostCarousel from '@/components/post-carousel';
 import StatusButton from '@/components/status-button';
 import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { useRenew } from '@/hooks/use-renew';
 import MainLayout from '@/layouts/main-layout';
 import { cn } from '@/lib/utils';
-import { Post, SharedData, type BreadcrumbItem } from '@/types';
+import { Post, SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 import { Bookmark, CircleMinus, EyeOff, LinkIcon, LucideEdit } from 'lucide-react';
 import { useState } from 'react';
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Post',
-        href: '/dashboard/post',
-    },
-];
 
 export default function ShowPost({ post }: { post: Post }) {
     const [status, setStatus] = useState(post.status);
     const { auth } = usePage<SharedData>().props;
     const isMe = auth.user?.id === post.user.id;
+
+    const { isReadyToRenew, time } = useRenew(post.expires_at);
 
     return (
         <MainLayout>
@@ -82,38 +79,34 @@ export default function ShowPost({ post }: { post: Post }) {
                                         <span className="text-nowrap"> {post.location.label}</span>
                                     </div>
 
-                                    {/* <template v-if="isMounted && isMe">
-                    <div className="flex items-center h-6 gap-1 text-xs">
-                      <div>{{ renewTime }} -</div>
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <Button
-                              @click="handleRenew"
-                              size="inline"
-                              variant="ghost"
-                              :disabled="!isReadyToRenew"
-                              >Renew</Button
-                            >
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <div class="text-xs text-center max-w-32">
-                              <template v-if="isReadyToRenew">
-                                <p>Renew your post for the next 30 days.</p>
-                              </template>
-
-                              <template v-if="!isReadyToRenew">
-                                <p>
-                                  You can renew your post within 7 days before
-                                  expiration.
-                                </p>
-                              </template>
-                            </div>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </div>
-                  </template> */}
+                                    <div className="flex h-6 items-center gap-1 text-xs">
+                                        <div>{time} -</div>
+                                        <TooltipProvider>
+                                            <Tooltip>
+                                                <TooltipTrigger asChild>
+                                                    <span>
+                                                        <Button
+                                                            size="inline"
+                                                            variant="ghost"
+                                                            asChild={isReadyToRenew}
+                                                            disabled={!isReadyToRenew}
+                                                        >
+                                                            <Link href={route('post.edit', { id: post.id, renew: 'true' })}>Renew</Link>
+                                                        </Button>
+                                                    </span>
+                                                </TooltipTrigger>
+                                                <TooltipContent>
+                                                    <div className="max-w-32 text-center text-xs">
+                                                        {isReadyToRenew ? (
+                                                            <p>Renew your post for the next 30 days.</p>
+                                                        ) : (
+                                                            <p>You can renew your post within 7 days before expiration.</p>
+                                                        )}
+                                                    </div>
+                                                </TooltipContent>
+                                            </Tooltip>
+                                        </TooltipProvider>
+                                    </div>
                                 </div>
                             </div>
                             <div className="space-y-6">

@@ -5,6 +5,7 @@ import InputSearch from '@/components/input-search';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Toaster } from '@/components/ui/sonner';
 import { cn } from '@/lib/utils';
 import { SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
@@ -108,6 +109,7 @@ export default function MainLayout({ children, bannerVariant = 'header' }: { chi
                 />
             )}
             {children}
+            <Toaster />
         </div>
     );
 }

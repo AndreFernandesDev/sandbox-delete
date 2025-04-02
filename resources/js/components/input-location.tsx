@@ -18,10 +18,12 @@ export default function InputLocation({
     id,
     value,
     onChange,
+    label,
 }: {
     id?: string;
     name?: string;
     value?: Location;
+    label?: string;
     required?: boolean;
     onChange?: (location: Location) => void;
 }) {
@@ -100,7 +102,7 @@ export default function InputLocation({
                         size="inline"
                         variant="ghost"
                     >
-                        <div>{value ? value.label : 'Please choose a location'}</div>
+                        <div>{value ? value.label : (label ?? 'Please choose a location')}</div>
                         <Navigation />
                     </Button>
                 </DialogTrigger>

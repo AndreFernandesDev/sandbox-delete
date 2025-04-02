@@ -11,3 +11,8 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::command(UpdateCurrencyRate::class)->cron('0 */12 * * *');
+
+
+Artisan::command('ssr', function () {
+    Process::forever()->run('php artisan inertia:start-ssr');
+});

@@ -69,6 +69,7 @@ export default function InputSearch() {
                     <InputLocation
                         value={auth.session?.location}
                         onChange={handleLocation}
+                        label="Worlwide"
                     />
                 </AuthGateDialog>
 
