@@ -81,9 +81,10 @@ class BannerController extends Controller
             'foreground' => request()->input('foreground'),
         ]);
 
-        $logo = request()->file('uploads')[0]["file"];
 
-        if ($logo) {
+        if (request()->file('uploads')) {
+            $logo = request()->file('uploads')[0]["file"];
+
             if ($banner->logo) {
                 $mediaService->destroyOne($banner->logo);
             }
