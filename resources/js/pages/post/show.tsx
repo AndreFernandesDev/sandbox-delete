@@ -1,12 +1,15 @@
 import AuthGateDialog from '@/components/auth-gate-dialog';
 import Container from '@/components/container';
+import IconLib from '@/components/icon-custom';
 import PostCarousel from '@/components/post-carousel';
+import StatusButton from '@/components/status-button';
 import { Button } from '@/components/ui/button';
 import MainLayout from '@/layouts/main-layout';
 import { cn } from '@/lib/utils';
 import { Post, SharedData, type BreadcrumbItem } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
-import { Bookmark, CircleMinus, LinkIcon, LucideEdit, X } from 'lucide-react';
+import { Bookmark, CircleMinus, EyeOff, LinkIcon, LucideEdit } from 'lucide-react';
+import { useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -16,6 +19,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function ShowPost({ post }: { post: Post }) {
+    const [status, setStatus] = useState(post.status);
     const { auth } = usePage<SharedData>().props;
     const isMe = auth.user?.id === post.user.id;
 
@@ -117,6 +121,7 @@ export default function ShowPost({ post }: { post: Post }) {
                                     {isMe ? (
                                         <Button
                                             variant="primary"
+                                            className="text-lg"
                                             asChild
                                         >
                                             <Link href={`/posts/${post.id}/edit`}>
@@ -127,7 +132,7 @@ export default function ShowPost({ post }: { post: Post }) {
                                     ) : (
                                         <AuthGateDialog>
                                             <Button
-                                                className="w-full"
+                                                className="w-full text-lg"
                                                 asChild
                                             >
                                                 <a
@@ -135,7 +140,7 @@ export default function ShowPost({ post }: { post: Post }) {
                                                     target="_blank"
                                                 >
                                                     Reply
-                                                    <X className="!size-5" />
+                                                    <IconLib type="x" />
                                                 </a>
                                             </Button>
                                         </AuthGateDialog>
@@ -143,7 +148,7 @@ export default function ShowPost({ post }: { post: Post }) {
 
                                     <AuthGateDialog>
                                         <Button
-                                            className="w-full"
+                                            className="w-full text-lg"
                                             asChild
                                         >
                                             <a
@@ -151,7 +156,7 @@ export default function ShowPost({ post }: { post: Post }) {
                                                 target="_blank"
                                             >
                                                 Post
-                                                <X className="!size-5" />
+                                                <IconLib type="x" />
                                             </a>
                                         </Button>
                                     </AuthGateDialog>
@@ -163,22 +168,37 @@ export default function ShowPost({ post }: { post: Post }) {
                                     <div className="flex items-center">
                                         {!isMe && (
                                             <>
-                                                <Button
-                                                    variant="ghost"
+                                                <StatusButton
                                                     className="w-full"
-                                                    size="icon"
+                                                    type="bookmark"
+                                                    onChange={(s) => setStatus(s)}
+                                                    id={post.id}
                                                 >
-                                                    <Bookmark />
-                                                    <span>Bookmark</span>
-                                                </Button>
-                                                <Button
-                                                    variant="ghost"
+                                                    <Button
+                                                        variant="ghost"
+                                                        className="w-full"
+                                                        size="icon"
+                                                    >
+                                                        <Bookmark className={cn('', status === 'bookmark' && 'text-primary fill-primary')} />
+                                                        <span>Bookmark</span>
+                                                    </Button>
+                                                </StatusButton>
+
+                                                <StatusButton
                                                     className="w-full"
-                                                    size="icon"
+                                                    type="hide"
+                                                    onChange={(s) => setStatus(s)}
+                                                    id={post.id}
                                                 >
-                                                    <CircleMinus />
-                                                    <span>Hide</span>
-                                                </Button>
+                                                    <Button
+                                                        variant="ghost"
+                                                        className="w-full"
+                                                        size="icon"
+                                                    >
+                                                        <CircleMinus />
+                                                        <span>Hide</span>
+                                                    </Button>
+                                                </StatusButton>
                                             </>
                                         )}
 
@@ -233,6 +253,45 @@ export default function ShowPost({ post }: { post: Post }) {
                     </div>
                 </div>
             </Container>
+
+            <div
+                className={cn(
+                    'pattern-diagonal-3 ease bg-muted text-muted-foreground/20 fixed -inset-[1px] z-20 grid cursor-default place-items-center overflow-hidden transition-all duration-500',
+                    status == 'hide' ? 'translate-y-0' : 'translate-y-full',
+                )}
+            >
+                <div className="border-muted bg-muted text-muted-foreground grid max-w-xs place-items-center gap-10 rounded-lg border-2 border-dashed p-10 text-balance">
+                    <div className="grid place-items-center gap-4 rounded text-sm">
+                        <EyeOff className="size-10 stroke-1" />
+                        <p>Content hidden</p>
+                    </div>
+                    <div className="bg-muted-foreground/20 h-0.5 w-full rounded"></div>
+                    <div className="grid place-items-center space-y-3">
+                        <p className="text-foreground text-center text-sm">To see other listings, please click the button below.</p>
+
+                        <Button
+                            size="sm"
+                            asChild
+                        >
+                            <Link href="/">Back home</Link>
+                        </Button>
+
+                        <StatusButton
+                            type="hide"
+                            onChange={(s) => setStatus(s)}
+                            id={post.id}
+                        >
+                            <Button
+                                size="sm"
+                                variant="ghost"
+                                className="text-foreground"
+                            >
+                                Undo action
+                            </Button>
+                        </StatusButton>
+                    </div>
+                </div>
+            </div>
         </MainLayout>
     );
 }

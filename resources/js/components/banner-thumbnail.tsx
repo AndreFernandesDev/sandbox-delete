@@ -29,7 +29,7 @@ function BannerThumbnailDefault({ banner }: { banner: Banner }) {
                 src={banner.logo.url}
                 className="size-16 object-contain"
             />
-            <div className="grid place-items-start gap-2">
+            <div className="grid place-items-start gap-2 font-medium">
                 <div className="space-y-1">
                     <span className="text-lg">{banner.title}</span>
                     <h2 className="text-2xl">{banner.label}</h2>
@@ -69,7 +69,7 @@ function BannerThumbnailHeader({ banner }: { banner: Banner }) {
                     src={banner.logo.url}
                     className="size-14 object-contain md:size-20"
                 />
-                <div className="grid place-items-start gap-2">
+                <div className="grid place-items-start gap-2 font-medium">
                     <div className="space-y-1">
                         <span className="text-xs md:text-sm xl:text-lg">{banner.title}</span>
                         <h2 className="text-md text-balance md:text-3xl">{banner.label}</h2>
@@ -103,7 +103,7 @@ function BannerThumbnailLarge({ banner }: { banner: Banner }) {
                 src={banner.logo.url}
                 className="size-16 object-contain md:size-24 xl:size-40"
             />
-            <div className="grid max-w-3xl flex-1 gap-1 md:gap-4">
+            <div className="grid max-w-3xl flex-1 gap-1 font-semibold md:gap-4">
                 <div className="md:space-y-2">
                     <span className="text-xs md:text-sm xl:text-2xl">{banner.title}</span>
                     <h2 className="text-md text-balance md:text-4xl">{banner.label}</h2>

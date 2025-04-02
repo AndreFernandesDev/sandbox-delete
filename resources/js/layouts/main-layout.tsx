@@ -1,5 +1,6 @@
 import AuthGateDialog from '@/components/auth-gate-dialog';
 import BannerThumbnail, { BannerThumbnailVariant } from '@/components/banner-thumbnail';
+import IconLib from '@/components/icon-custom';
 import InputSearch from '@/components/input-search';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -7,7 +8,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { cn } from '@/lib/utils';
 import { SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { ChevronDown, LucideEdit, X } from 'lucide-react';
+import { ChevronDown, LucideEdit } from 'lucide-react';
 
 export default function MainLayout({ children, bannerVariant = 'header' }: { children: React.ReactNode; bannerVariant?: BannerThumbnailVariant }) {
     const { auth, banner } = usePage<SharedData>().props;
@@ -81,7 +82,7 @@ export default function MainLayout({ children, bannerVariant = 'header' }: { chi
                     <div className="order-1 flex justify-end md:order-none">
                         {auth.user ? (
                             <Link href="/profile">
-                                <Avatar className="border-secondary border">
+                                <Avatar className="border-secondary size-14 border">
                                     <AvatarImage src={auth.user.profile_image_url} />
                                     <AvatarFallback>FC</AvatarFallback>
                                 </Avatar>
@@ -93,7 +94,7 @@ export default function MainLayout({ children, bannerVariant = 'header' }: { chi
                             >
                                 <a href="/auth/redirect">
                                     <span className="md:hidden lg:block">Connect</span>
-                                    <X />
+                                    <IconLib type="x" />
                                 </a>
                             </Button>
                         )}

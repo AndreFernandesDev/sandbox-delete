@@ -5,9 +5,11 @@ export default function StatusButton({
     children,
     type,
     onChange,
+    className,
 }: {
     id: string;
     type: string;
+    className?: string;
     children: React.ReactNode;
     onChange?: (status: string) => void;
 }) {
@@ -20,5 +22,12 @@ export default function StatusButton({
         } catch {}
     };
 
-    return <span onClick={handleClick}>{children}</span>;
+    return (
+        <span
+            className={className}
+            onClick={handleClick}
+        >
+            {children}
+        </span>
+    );
 }

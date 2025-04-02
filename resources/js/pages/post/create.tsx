@@ -12,7 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import MainSimpleLayout from '@/layouts/main-simple-layout';
 import { Currency, Location, Tag } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
-import { LoaderCircle } from 'lucide-react';
+import { ArrowRight, LoaderCircle } from 'lucide-react';
 
 type Form = {
     title: string;
@@ -147,12 +147,22 @@ export default function CreatePost({ currencies, tags }: { currencies: { data: C
 
                         <Button
                             type="submit"
-                            className="mt-4 w-full"
-                            tabIndex={4}
+                            className="w-full justify-between"
+                            variant="primary"
+                            size="xl"
                             disabled={processing}
                         >
-                            {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                             Post
+                            <div>
+                                {processing ? (
+                                    <LoaderCircle className="h-4 w-4 animate-spin" />
+                                ) : (
+                                    <div className="flex items-center gap-2">
+                                        Free
+                                        <ArrowRight />
+                                    </div>
+                                )}
+                            </div>
                         </Button>
                     </div>
                 </form>

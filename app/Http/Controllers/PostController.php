@@ -151,11 +151,7 @@ class PostController extends Controller
 
         $type = request()->input('type');
         $item = Post::findOrFail($id);
-        $status = Status::where("user_id", "=", $item->user->id)->where("item_id", "=", $item->id)->first();
-
-        if ($item->user->id != Auth::id()) {
-            abort(401);
-        }
+        $status = Status::where("user_id", "=", Auth::id())->where("item_id", "=", $item->id)->first();
 
         if (!$status) {
             Status::create([

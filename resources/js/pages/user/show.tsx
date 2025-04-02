@@ -1,12 +1,12 @@
 import { CardInfo } from '@/components/card-info';
 import Container from '@/components/container';
+import IconLib from '@/components/icon-custom';
 import PostList from '@/components/post-list';
 import { Button } from '@/components/ui/button';
 import UserAvatar from '@/components/user-avatar';
 import MainLayout from '@/layouts/main-layout';
 import { Post, User } from '@/types';
 import { Head, Link } from '@inertiajs/react';
-import { X } from 'lucide-react';
 
 export default function UserShow({ user, posts }: { user: User; posts: { data: Post[] } }) {
     console.log(user);
@@ -23,7 +23,7 @@ export default function UserShow({ user, posts }: { user: User; posts: { data: P
                             target="_blank"
                         >
                             Message
-                            <X />
+                            <IconLib type="x" />
                         </a>
                     </Button>
                 </div>

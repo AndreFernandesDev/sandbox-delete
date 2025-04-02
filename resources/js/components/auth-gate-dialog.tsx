@@ -2,8 +2,8 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { SharedData } from '@/types';
 import { usePage } from '@inertiajs/react';
-import { X } from 'lucide-react';
 import { useState } from 'react';
+import IconLib from './icon-custom';
 
 export default function AuthGateDialog({ children }: { children: React.ReactNode }) {
     const { auth } = usePage<SharedData>().props;
@@ -29,7 +29,7 @@ export default function AuthGateDialog({ children }: { children: React.ReactNode
                         >
                             <a href="/auth/redirect">
                                 Connect
-                                <X />
+                                <IconLib type="x" />
                             </a>
                         </Button>
                     </div>
