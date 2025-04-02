@@ -30,7 +30,6 @@
             }
         </style>
 
-        <title inertia>{{ config('app.name', 'For Crypto') }}</title>
         <link rel="icon" type="image/x-icon" href="/favicon.png">
         
 
@@ -39,7 +38,7 @@
         @vite(['resources/js/app.tsx', "resources/js/pages/{$page['component']}.tsx"])
         @inertiaHead
     </head>
-    <body class="font-sans antialiased min-h-screen">
+    <body class="min-h-screen font-sans antialiased">
         @inertia
     </body>
 </html>

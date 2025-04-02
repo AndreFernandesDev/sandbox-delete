@@ -8,11 +8,13 @@ use App\Http\Resources\TagResource;
 use App\Models\Location;
 use App\Models\Post;
 use App\Models\Rate;
+use App\Models\Status;
 use App\Models\Tag;
 use App\Models\TagItem;
 use App\Services\MediaService;
 use Clickbar\Magellan\Data\Geometries\Point;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class PostController extends Controller
@@ -139,6 +141,39 @@ class PostController extends Controller
         $mediaService->update(request()->input('uploads'), request()->file('uploads'), $post->id);
 
         return to_route('post.show', ['id' => $post->id]);
+    }
+
+    public function status(string $id)
+    {
+        request()->validate([
+            'type' => 'required',
+        ]);
+
+        $type = request()->input('type');
+        $item = Post::findOrFail($id);
+        $status = Status::where("user_id", "=", $item->user->id)->where("item_id", "=", $item->id)->first();
+
+        if ($item->user->id != Auth::id()) {
+            abort(401);
+        }
+
+        if (!$status) {
+            Status::create([
+                "user_id" => Auth::id(),
+                "item_id" => $item->id,
+                "type" => $type
+            ]);
+
+            return response()->json(["status" => $type]);
+        } else if ($status->type === $type) {
+            Status::where("user_id", "=", Auth::id())->where("item_id", "=", $item->id)->delete();
+
+            return response()->json(["status" => ""]);
+        } else {
+            Status::where("user_id", "=", Auth::id())->where("item_id", "=", $item->id)->update(["type" => $type]);
+
+            return response()->json(["status" => $type]);
+        }
     }
 
     public function destroy(string $id, MediaService $mediaService)

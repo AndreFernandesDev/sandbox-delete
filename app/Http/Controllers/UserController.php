@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PostResource;
+use App\Http\Resources\UserResource;
+use App\Models\Post;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Inertia\Inertia;
 use Laravel\Socialite\Facades\Socialite;
 
 class UserController extends Controller
@@ -43,5 +47,16 @@ class UserController extends Controller
         request()->session()->regenerateToken();
 
         return redirect('/');
+    }
+
+    public function show(string $id)
+    {
+        $user = new UserResource(User::findOrFail($id));
+        $posts = PostResource::collection(Post::whereRelation("user", "id", "=", $id)->get());
+
+        return Inertia::render('user/show', [
+            'user' => $user,
+            'posts' => $posts
+        ]);
     }
 }

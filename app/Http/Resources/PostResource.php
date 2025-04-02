@@ -2,9 +2,11 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Status;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Log;
 
 class PostResource extends JsonResource
 {
@@ -15,8 +17,8 @@ class PostResource extends JsonResource
         $user = new UserResource($this->user);
         $rate = new RateResource($this->rate);
         $location = new LocationResource($this->location);
-        $tags = [];
 
+        $tags = [];
         foreach ($this->tags as $tag) {
             $t = new TagResource($tag->tag);
             array_push($tags, $t);
@@ -34,6 +36,7 @@ class PostResource extends JsonResource
             'rate' => $rate['rate'],
             'crypto' => number_format($rate['rate'] * $this->price, 6),
             'user' => $user,
+            'status' => $this->status?->type,
             'created_at' => $this->created_at,
             'created_at_diff' => $this->created_at->diffForHumans(),
             'created_at_humans' => Carbon::parse($this->created_at)->format('F Y'),

@@ -13,7 +13,7 @@ export default function PostList({ posts, variant = 'default' }: { posts: Post[]
                     />
                 ))}
 
-                {posts.length < 5 && [...Array(5)].map(() => <div></div>)}
+                {posts.length < 5 && [...Array(5)].map((_, i) => <div key={i}></div>)}
             </div>
         </div>
     );

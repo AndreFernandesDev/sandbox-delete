@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class Post extends Model
@@ -45,5 +46,10 @@ class Post extends Model
     public function location()
     {
         return $this->hasOne(Location::class, 'item_id', 'id');
+    }
+
+    public function status()
+    {
+        return $this->hasOne(Status::class, 'item_id', 'id')->where(['user_id' => Auth::id()]);
     }
 }
