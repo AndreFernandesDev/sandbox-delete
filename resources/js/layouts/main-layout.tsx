@@ -141,16 +141,14 @@ const InputSearch = () => {
                     </Button>
                 </div>
 
-                <template v-if="isMounted">
-                    <InputLocation />
-                    <Button
-                        size="inline"
-                        variant="ghost"
-                        className="text-muted-foreground"
-                    >
-                        <RotateCcw />
-                    </Button>
-                </template>
+                <InputLocation />
+                <Button
+                    size="inline"
+                    variant="ghost"
+                    className="text-muted-foreground"
+                >
+                    <RotateCcw />
+                </Button>
             </div>
         </div>
     );

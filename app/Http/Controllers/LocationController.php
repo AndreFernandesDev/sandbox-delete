@@ -9,9 +9,8 @@ class LocationController extends Controller
 {
     public function search()
     {
-        $res = Http::get('https://api.positionstack.com/v1/forward?query=' . request()->input('search') . '&limit=5&access_key=' . env('PSTACK_KEY'));
-        $results = LocationApiResource::collection($res->object()->data);
+        $res = Http::get('https://maps.googleapis.com/maps/api/geocode/json?address=' . request()->input('search') . '&key=' . env('GOOGLE_KEY'));
 
-        return $results;
+        return LocationApiResource::collection($res->object()->results);
     }
 }

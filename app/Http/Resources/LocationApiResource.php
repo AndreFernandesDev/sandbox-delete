@@ -12,9 +12,9 @@ class LocationApiResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'latitude' => $this->latitude,
-            'longitude' => $this->longitude,
-            'label' => $this->label,
+            'latitude' => $this->geometry->location->lat,
+            'longitude' => $this->geometry->location->lng,
+            'label' => $this->formatted_address,
         ];
     }
 }
