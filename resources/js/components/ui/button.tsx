@@ -5,7 +5,7 @@ import {cva, type VariantProps} from "class-variance-authority"
 import {cn} from "@/lib/utils"
 
 const buttonVariants = cva(
-    "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-[color,box-shadow] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+    "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded text-md font-medium transition-[color,box-shadow] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
     {
         variants: {
             variant: {
@@ -25,11 +25,12 @@ const buttonVariants = cva(
                 "outline-muted-primary":
                     "bg-background border border-primary text-muted-foreground hover:text-muted-foreground/90",
                 ghost: "border-transparent text-primary hover:text-primary/80",
+                "ghost-neutral": "border-transparent text-foreground hover:text-foreground/80",
                 link: "text-primary underline-offset-4 hover:underline",
             },
             size: {
                 default:
-                    "h-13 px-5 py-3 [&_svg]:size-5 has-[>svg]:justify-between",
+                    "h-14 px-5 py-5 text-lg [&_svg]:!size-5 has-[>svg]:justify-between",
                 sm: "h-10 px-3 py-2 text-sm [&_svg]:size-4 has-[>svg]:justify-between",
                 xs: "h-8 px-3 py-2 text-sm [&_svg]:size-3 has-[>svg]:justify-between",
                 xl: "h-20 px-6 py-3 gap-6 text-xl [&_svg]:size-6 has-[>svg]:justify-between has-[[role='status']]:justify-between",

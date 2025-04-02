@@ -3,6 +3,7 @@ import type { Config } from 'ziggy-js';
 
 export interface Auth {
     user?: User;
+    session?: Session;
 }
 
 export interface BreadcrumbItem {
@@ -45,6 +46,10 @@ export interface User {
     updated_at: string;
 
     created_at_humans: string;
+}
+
+export interface Session {
+    location?: Location;
 }
 
 export interface Post {

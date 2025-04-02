@@ -5,6 +5,7 @@ use App\Http\Controllers\BannerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\SessionController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\AdminGate;
 use Illuminate\Support\Facades\Route;
@@ -34,11 +35,15 @@ Route::post('/auth/logout', [UserController::class, 'logout'])->name('auth.logou
 // User
 Route::get('/user/{id}', [UserController::class, 'show'])->name('user.show');
 
+// Session
+Route::middleware(['auth'])->group(function () {
+    Route::post('/session/location', [SessionController::class, 'location'])->name('session.location');
+});
+
 // Profile
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [AppController::class, 'profile'])->name('profile');
     Route::get('/profile/bookmark', [AppController::class, 'profileBookmark'])->name('profile.bookmark');
-
 });
 
 // Posts

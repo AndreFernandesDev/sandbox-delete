@@ -1,9 +1,15 @@
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { SharedData } from '@/types';
+import { usePage } from '@inertiajs/react';
+import { X } from 'lucide-react';
 import { useState } from 'react';
 
 export default function AuthGateDialog({ children }: { children: React.ReactNode }) {
+    const { auth } = usePage<SharedData>().props;
     const [open, setOpen] = useState(false);
+
+    if (auth.user) return <>{children}</>;
 
     return (
         <Dialog
@@ -11,29 +17,26 @@ export default function AuthGateDialog({ children }: { children: React.ReactNode
             onOpenChange={setOpen}
         >
             <DialogTrigger asChild>
-                <span>{children}</span>
+                <span className="cursor-default *:pointer-events-none">{children}</span>
             </DialogTrigger>
             <DialogContent>
-                <DialogTitle>Are you sure you want to delete your post?</DialogTitle>
-                <DialogDescription>Once your post is deleted, all of its resources and data will also be permanently deleted.</DialogDescription>
-                <DialogFooter className="gap-2">
-                    <DialogClose asChild>
+                <div className="mt-8 grid place-items-center md:mt-0">
+                    <DialogTitle className="text-primary mb-4 text-center text-3xl font-normal">Join our community</DialogTitle>
+                    <div>
                         <Button
-                            variant="ghost"
-                            size="sm"
+                            className="w-48"
+                            asChild
                         >
-                            Cancel
+                            <a href="/auth/redirect">
+                                Connect
+                                <X />
+                            </a>
                         </Button>
-                    </DialogClose>
-
-                    <Button
-                        variant="destructive"
-                        size="sm"
-                        asChild
-                    >
-                        Login
-                    </Button>
-                </DialogFooter>
+                    </div>
+                    <DialogDescription className="text-primary mt-5 w-full max-w-64 text-center text-xs text-balance">
+                        By connecting, you agree and accept the For Crypto Terms & Policies
+                    </DialogDescription>
+                </div>
             </DialogContent>
         </Dialog>
     );

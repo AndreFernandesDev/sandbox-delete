@@ -9,7 +9,7 @@ export function CardInfo({
     title: string;
     description: string;
     className?: string;
-    children: React.ReactNode;
+    children?: React.ReactNode;
 }) {
     return (
         <div className={cn('bg-primary/5 border-secondary m-10 space-y-6 rounded border p-8 py-20 text-center', className)}>

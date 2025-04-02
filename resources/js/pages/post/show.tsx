@@ -19,8 +19,6 @@ export default function ShowPost({ post }: { post: Post }) {
     const { auth } = usePage<SharedData>().props;
     const isMe = auth.user?.id === post.user.id;
 
-    console.log(post);
-
     return (
         <MainLayout>
             <Head title={post.title} />
@@ -123,7 +121,7 @@ export default function ShowPost({ post }: { post: Post }) {
                                         >
                                             <Link href={`/posts/${post.id}/edit`}>
                                                 Edit
-                                                <LucideEdit className="!size-5" />
+                                                <LucideEdit />
                                             </Link>
                                         </Button>
                                     ) : (
@@ -205,7 +203,17 @@ export default function ShowPost({ post }: { post: Post }) {
                         </div>
                     </div>
 
-                    <div className="bg-secondary mt-4 h-[1px] w-full"></div>
+                    <div className="border-secondary flex flex-wrap gap-2 border-y py-8">
+                        {post.tags.map((tag) => (
+                            <Button
+                                key={tag.id}
+                                size="xs"
+                                variant="outline-muted"
+                            >
+                                {tag.name}
+                            </Button>
+                        ))}
+                    </div>
 
                     <div className="space-y-2">
                         <h2 className="text-primary text-2xl">Description</h2>

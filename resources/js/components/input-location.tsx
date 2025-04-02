@@ -51,7 +51,6 @@ export default function InputLocation({
 
         try {
             const res = await axios.post(route('location.search', { search: value }));
-            console.log(res);
             const locations = res.data.data as Location[];
             setResults(locations);
         } catch (error) {

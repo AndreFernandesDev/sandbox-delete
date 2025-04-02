@@ -17,7 +17,7 @@ export default function UserAvatar({ user }: { user: User }) {
                     href={isMe ? '/profile' : `/user/${user.id}`}
                     className="text-muted-foreground group flex gap-4"
                 >
-                    <Avatar className="size-20 text-3xl transition-opacity group-hover:opacity-90">
+                    <Avatar className="border-secondary size-20 border text-3xl transition-opacity group-hover:opacity-90">
                         <AvatarImage src={user.profile_image_url} />
                         <AvatarFallback>{user.name.slice(0, 1)}</AvatarFallback>
                     </Avatar>

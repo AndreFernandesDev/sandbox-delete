@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Http\Resources\BannerResource;
+use App\Http\Resources\SessionResource;
 use App\Http\Resources\UserResource;
 use App\Models\Banner;
 use Illuminate\Foundation\Inspiring;
@@ -40,8 +41,9 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
-        $user = $request->user() ? new UserResource($request->user()) : $request->user();
+        $user = $request->user() ? new UserResource($request->user()) : null;
+        $session = $request->session() ? new SessionResource($request->session()) : null;
+
         $banner = Banner::inRandomOrder()->where("is_active", "=", "true")->first();
         $banner = $banner ? new BannerResource($banner) : null;
 
@@ -49,9 +51,9 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'name' => config('app.name'),
             'banner' => $banner,
-            'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
                 'user' => $user,
+                'session' => $session,
             ],
             'ziggy' => fn(): array => [
                 ...(new Ziggy)->toArray(),
