@@ -22,7 +22,17 @@ export default function ShowPost({ post }: { post: Post }) {
 
     return (
         <MainLayout>
-            <Head title={post.title} />
+            <Head title={post.title}>
+                <meta
+                    property="og:image"
+                    content={post.thumbnail.url}
+                />
+                <meta
+                    name="twitter:card"
+                    content="summary_large_image"
+                />
+            </Head>
+
             <Container variant="sm">
                 <div className="grid gap-12 pt-12 pb-24">
                     <div className="flex flex-col-reverse gap-12 md:flex-row">

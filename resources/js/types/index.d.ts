@@ -63,6 +63,7 @@ export interface Post {
     status: string;
 
     media: Media[];
+    thumbnail: Media;
     tags: Tag[];
     location: Location;
     user: User;

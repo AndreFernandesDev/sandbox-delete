@@ -3,7 +3,10 @@
 namespace App\Services;
 
 use App\Models\Media;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Intervention\Image\Laravel\Facades\Image;
 
 class MediaService
 {
@@ -21,14 +24,37 @@ class MediaService
             'url' => Storage::url("{$this->folder}/{$name}"),
             'item_id' => $itemId,
             'order' => $order,
-            'code' => $code,
+            'code' => $code
         ]);
-
     }
 
-    public function storeMany($files, string $itemId)
+    public function storeThumbnailForX($file, $mime, $itemId)
+    {
+        $extension = substr($mime, strrpos($mime, '/') + 1);
+        $path = "{$this->folder}/{$itemId}.{$extension}";
+
+        $output = Image::read(Storage::path('x_card_template.jpg'))
+            ->place(Image::read($file)->pad(280, 280), 'center-left', 40);
+
+        Storage::put($path, $output->encodeByExtension($extension));
+
+        Media::create([
+            'type' => $mime,
+            'name' => $path,
+            'url' => Storage::url($path),
+            'item_id' => $itemId,
+            'order' => 999,
+            'code' => 'x_thumbnail'
+        ]);
+    }
+
+    public function storeMany($files, string $itemId, $opts = [])
     {
         foreach ($files as $i => $file) {
+            if ($i == 0 && $opts["thumbnail"]) {
+                $this->storeThumbnailForX($file["file"], $file["file"]->getMimeType(), $itemId);
+            }
+
             $this->storeOne($file["file"], $itemId, $i);
         }
     }
@@ -39,14 +65,18 @@ class MediaService
             $media = Media::find($upload["id"]);
 
             if (!$media) {
-                foreach ($files as $file) {
-                    if (!$file["file"]->getClientOriginalName() == $upload["id"]) {
-                        continue;
-                    }
-
-                    $this->storeOne($file["file"], $itemId, $i);
+                $file = current($files)["file"];
+                if ($i == 0) {
+                    $this->storeThumbnailForX($file, $file->getMimeType(), $itemId);
                 }
+
+                $this->storeOne($file, $itemId, $i);
+                array_shift($files);
             } else {
+                if ($i == 0) {
+                    $this->storeThumbnailForX(Storage::get($media->name), $media->type, $itemId);
+                }
+
                 $media->update(["order" => $i]);
             }
 
@@ -61,6 +91,15 @@ class MediaService
 
     public function destroyMany($media)
     {
+        foreach ($media as $m) {
+            $this->destroyOne($m);
+        }
+    }
+
+    public function destroyManyByItem($id)
+    {
+        $media = Media::where("item_id", "=", $id)->get();
+
         foreach ($media as $m) {
             $this->destroyOne($m);
         }

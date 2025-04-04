@@ -2,11 +2,9 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Status;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Log;
 
 class PostResource extends JsonResource
 {
@@ -25,7 +23,14 @@ class PostResource extends JsonResource
         }
 
         $crypto = number_format($rate['rate'] * $this->price, 6);
-        $media = MediaResource::collection($this->media);
+
+        $media = MediaResource::collection($this->media->filter(function ($media) {
+            return $media->code === 'display';
+        }));
+
+        $thumbnail = new MediaResource(
+            $this->media->firstWhere('code', 'x_thumbnail')
+        );
 
         return [
             'id' => $this->id,
@@ -36,6 +41,7 @@ class PostResource extends JsonResource
             'status' => $this->status?->type,
             'crypto' => $crypto,
             'media' => $media,
+            'thumbnail' => $thumbnail,
             'tags' => $tags,
             'location' => $location,
             'rate' => $rate['rate'],

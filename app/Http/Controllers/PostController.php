@@ -6,16 +6,19 @@ use App\Http\Resources\PostResource;
 use App\Http\Resources\RateResource;
 use App\Http\Resources\TagResource;
 use App\Models\Location;
+use App\Models\Media;
 use App\Models\Post;
 use App\Models\Rate;
 use App\Models\Status;
 use App\Models\Tag;
 use App\Models\TagItem;
+use App\Services\ImageManipulationService;
 use App\Services\MediaService;
 use Carbon\Carbon;
 use Clickbar\Magellan\Data\Geometries\Point;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class PostController extends Controller
@@ -62,7 +65,7 @@ class PostController extends Controller
             ]);
         }
 
-        $mediaService->storeMany(request()->file('uploads'), $post->id);
+        $mediaService->storeMany(request()->file('uploads'), $post->id, ["thumbnail" => true]);
 
         return to_route('post.show', ['id' => $post->id]);
     }
@@ -88,7 +91,7 @@ class PostController extends Controller
         ]);
     }
 
-    public function update(string $id, MediaService $mediaService)
+    public function update(string $id, MediaService $mediaService, ImageManipulationService $imageManipulationService)
     {
         request()->validate([
             'uploads' => 'required',
@@ -182,7 +185,7 @@ class PostController extends Controller
         $post = Post::findOrFail($id);
         $location = Location::where('item_id', '=', $id)->firstOrFail();
 
-        $mediaService->destroyMany($post->media);
+        $mediaService->destroyManyByItem($post->id);
         $post->delete();
         $location->delete();
 

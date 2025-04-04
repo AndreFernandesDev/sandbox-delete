@@ -15,6 +15,7 @@ import MainSimpleLayout from '@/layouts/main-simple-layout';
 import { Currency, Location, Post, Tag, type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
 import { ArrowRight, LoaderCircle } from 'lucide-react';
+import { useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -42,6 +43,8 @@ type Form = {
 export default function PostEdit({ post, currencies, tags }: { post: Post; currencies: { data: Currency[] }; tags: { data: Tag[] } }) {
     const params = useQueryParams();
     const renew = params.renew ?? '';
+
+    const [isLoading, setIsLoading] = useState(false);
 
     const { data, setData, processing, errors, ...form } = useForm<Form>({
         title: post.title,
@@ -107,6 +110,8 @@ export default function PostEdit({ post, currencies, tags }: { post: Post; curre
                                 maxFiles={10}
                                 value={post.media}
                                 onChange={(uploads) => setData('uploads', uploads)}
+                                onDelete={(deletes) => setData('deletes', deletes)}
+                                onStatus={(status) => setIsLoading(status == 'processing')}
                             />
                             <InputError message={errors.uploads} />
                         </InputWrapper>
@@ -188,11 +193,11 @@ export default function PostEdit({ post, currencies, tags }: { post: Post; curre
                                 className="w-full justify-between"
                                 variant="primary"
                                 size="xl"
-                                disabled={processing}
+                                disabled={processing || isLoading}
                             >
                                 {renew ? 'Renew' : 'Update'}
                                 <div>
-                                    {processing ? (
+                                    {processing || isLoading ? (
                                         <LoaderCircle className="h-4 w-4 animate-spin" />
                                     ) : (
                                         <div className="flex items-center gap-2">
