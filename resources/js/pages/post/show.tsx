@@ -24,8 +24,25 @@ export default function ShowPost({ post }: { post: Post }) {
         <MainLayout>
             <Head title={post.title}>
                 <meta
+                    name="description"
+                    content={post.description}
+                />
+
+                <meta
                     property="og:image"
                     content={post.thumbnail.url}
+                />
+                <meta
+                    name="og:type"
+                    content="website"
+                />
+                <meta
+                    name="og:title"
+                    content={post.title}
+                />
+                <meta
+                    name="og:description"
+                    content={post.description}
                 />
                 <meta
                     name="twitter:card"
