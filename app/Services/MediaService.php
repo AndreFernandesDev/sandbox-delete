@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Resources\MediaResource;
 use App\Models\Media;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -30,8 +31,14 @@ class MediaService
 
     public function storeThumbnailForX($file, $mime, $itemId)
     {
+        $thumbnail = Media::where("item_id", "=", $itemId)->where("code", "=", "x_thumbnail")->get();
+        if ($thumbnail) {
+            $this->destroyMany($thumbnail);
+        }
+
+        $name = Str::random();
         $extension = substr($mime, strrpos($mime, '/') + 1);
-        $path = "{$this->folder}/{$itemId}.{$extension}";
+        $path = "{$this->folder}/{$name}.{$extension}";
 
         $output = Image::read(Storage::path('x_card_template.jpg'))
             ->place(Image::read($file)->pad(280, 280), 'center-left', 40);
